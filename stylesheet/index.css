@@ -15,6 +15,7 @@
     background-color: #dcdcdc;
     justify-content: space-between;
     overflow: hidden;
+    
 }
 
 .dropdown {
@@ -29,6 +30,10 @@
     background-color: inherit;
     font-family: inherit; /* Important for vertical align on mobile phones */
     margin: 0; /* Important for vertical align on mobile phones */
+}
+
+#nav-left {
+    margin-left: 15%;
 }
 
 #nav-left img {
@@ -58,7 +63,8 @@
 
 #nav-right {
     margin-top: 20px;
-    width: auto%;
+    width: auto;
+    margin-right: 15%;
 }
  
 #nav-form {
