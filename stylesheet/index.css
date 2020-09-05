@@ -145,3 +145,9 @@ h6 {
     border-radius: 15px;
     background-color: white;
 }
+
+.item-side-nav {
+    width: 19.5%;
+    height: auto;
+    border-style: solid;
+}
