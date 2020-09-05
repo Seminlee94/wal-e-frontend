@@ -1,9 +1,10 @@
 /* Navbar container */
 .welcome-page {
-    height: auto;
+    height: 100%;
     width: 99.5%;
-    overflow: scroll;
     background-color: #FFFAF0;
+    position: absolute;
+    overflow: scroll;
 }
 
 .navbar {
@@ -48,7 +49,7 @@
     min-width: 320px;
     height: 550px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    z-index: 2;
     border-radius: 15px;
 }
 
@@ -70,7 +71,7 @@
     min-width: 250px;
     height: 440px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    z-index: 2;
     border-radius: 15px;
 }
 
@@ -104,15 +105,18 @@
     height: 90%;
     margin-left: 20%;
     position: absolute;
+    z-index: 1;
 }
 
 #main-page-picture {
+    position: relative;
+    z-index: 1;
     width: 100%;
     height: 350px;
 }
 
 #main-page-picture img {
-    width: 80%;
+    width: 100%;
     height: 100%;
 }
 
@@ -136,10 +140,9 @@ h6 {
 
 .cart-container {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     width: 50%;
     height: 800px;
-    top: 50;
     left: 500px;
     border-style: solid;
     border-radius: 15px;
@@ -147,7 +150,17 @@ h6 {
 }
 
 .item-side-nav {
-    width: 19.5%;
-    height: auto;
+    position: relative;
+    width: 10%;
+    height: 60%;
     border-style: solid;
+    z-index: 1;
+}
+
+#blank {
+    text-align: center;
+}
+
+h2 {
+    color: white;
 }
