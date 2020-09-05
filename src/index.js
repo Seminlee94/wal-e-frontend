@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const ddAisle = document.querySelector(".dropdown-aisle")
     const mainContainers = document.querySelector("#main-containers")
     const sideNav = document.querySelector(".item-side-nav")
-    const blank = document.querySelector("#blank")
-
+    const blank = document.querySelector(".blank")
+    const navLeft = document.querySelector("#nav-left")
 
     // const userFetchAdapter = new FetchAdapter("http://localhost:3000/")
 
@@ -14,6 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // const action = users => users.forEach(console.log)
     // userFetchAdapter.get("users", action)
 
+
+
+    // Flatiron click => page reload
+    navLeft.addEventListener("click", (e) => {
+        location.reload()
+    })
 
     // hide & seek with the cart
     navCart.addEventListener("click", () => {
@@ -31,9 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let categoryId = e.target.dataset.num
         let itemCategory = e.target.innerText 
 
-        blank.innerHTML = `
-            <h2>${itemCategory}</h2>
-        `
+        blank.innerText = itemCategory
         blank.style.backgroundColor = "DimGrey";
         blank.style.height = "50px";
         // debugger
@@ -53,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
         `
         sideNav.dataset.num = categoryId
         
-        // debugger
         //
     })
 
