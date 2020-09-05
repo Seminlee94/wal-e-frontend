@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sideNav = document.querySelector(".item-side-nav")
     const blank = document.querySelector(".blank")
     const navLeft = document.querySelector("#nav-left")
+    const cartBtn = document.querySelector(".cart-btn")
 
     // const userFetchAdapter = new FetchAdapter("http://localhost:3000/")
 
@@ -14,22 +15,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // const action = users => users.forEach(console.log)
     // userFetchAdapter.get("users", action)
 
-
-
+    
     // Flatiron click => page reload
     navLeft.addEventListener("click", (e) => {
         location.reload()
     })
-
+    
     // hide & seek with the cart
     navCart.addEventListener("click", () => {
-        if (cartContainer.style.display === "block") {
-            cartContainer.style.display = "none"
-        } else if (cartContainer.style.display === "none") { 
-          cartContainer.style.display = "block"
-        }
+        cartContainer.style.display = "block"
+        
     });
-
+    
+    // Cart X button
+    cartBtn.addEventListener("click", (e) => {
+        cartContainer.style.display = "none"
+    })
 
     // click the items in dropdown list to fetch the category api
 
