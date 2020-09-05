@@ -8,9 +8,7 @@
     <script type="text/javascript" src="src/fetchAdapter.js"></script>
     <script type="text/javascript" src="src/index.js" defer></script>
   </head>
-  <body>
-
-    <div class="welcome-page">
+  <body class="welcome-page">
         <!-- Navigation bar -->
         <div class="navbar">
             <!-- Nav left flatiron icon -->
@@ -23,6 +21,7 @@
                 />
             </div>
             <div class="nav-logo">
+                <!-- Browse aisle drop down -->
                 <div class="dropdown">
                     <button class="dropbtn">Browse Aisle</button>
                     <div class="dropdown-aisle">
@@ -63,9 +62,11 @@
             </form>
             <!-- Nav right side -->
             <div id="nav-right">
-                |<img src="https://image.flaticon.com/icons/svg/891/891462.svg" alt="cart-icon" 
-                width="30" 
-                hegith="30"/> Cart 
+                <div class="nav-cart">
+                    <img src="https://image.flaticon.com/icons/svg/891/891462.svg" class="cart-icon" 
+                    width="30" 
+                    hegith="30"/> Cart |
+                </div>
                 <div class="dropdown">
                     <button class="dropbtn"><img src="https://as1.ftcdn.net/jpg/02/59/39/46/500_F_259394679_GGA8JJAEkukYJL9XXFH2JoC3nMguBPNH.jpg" alt="user-icon" 
                     width="30" height="30"/> User</button>
@@ -81,15 +82,15 @@
                         <h6>OR</h6>
                         <h6>New User? SIGN UP!!</h6>
                     </div>
-                </div>| 
-                <img src="https://as1.ftcdn.net/jpg/02/38/04/12/500_F_238041213_HpCrAOygUlb4MHQCBmCmO1g3zMegWVRe.jpg" alt="wishlist-icon" 
-                width="30" height="30"/> Wishlist
+                </div>
+                <div class="nav-wishlist">
+                    | <img src="https://as1.ftcdn.net/jpg/02/38/04/12/500_F_238041213_HpCrAOygUlb4MHQCBmCmO1g3zMegWVRe.jpg" alt="wishlist-icon" 
+                    width="30" height="30"/> Wishlist
+                </div> 
             </div>
         </div>
 
-        <div id="blank">
-
-        </div>
+        <div id="blank"></div>
 
         <div id="containers">
             <!-- Main page picture -->
@@ -129,7 +130,33 @@
                 </div>
             </div>
         </div>
-    </div>
+        
+        
+        <!-- Cart page -->
+        <div class="cart-container" style="display: none">
+            <div class="cart-top">
+                <h5>Cart</h5>
+                <button>X</button>
+            </div>
+            <div class="cart-middle">
+                <div class="cart-middle-left">
+        
+                </div>
+                <div class="cart-middle-right">
+                    Order Information
+                    <div class="cart-total">
+                        <div class="cart-subtotal">Subtotal</div>
+                        <div class="cart-tax">Estimated tax</div>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-bottom">
+                <button>Empty Cart</button>
+                <button>Checkout</button>
+            </div>
+        </div>
+        
 
   </body>
 </html>
+
