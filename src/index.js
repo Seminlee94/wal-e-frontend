@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartItems = document.querySelectorAll(".cart-item")
     const cartList = document.querySelector(".cart-middle-left")
     const dragDiv = document.querySelector(".div1")
+    const cartIcon = document.querySelector(".cart-icon")
 
     // const userFetchAdapter = new FetchAdapter("http://localhost:3000/")
 
@@ -19,6 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
     //Fetch all users
     // const action = users => users.forEach(console.log)
     // userFetchAdapter.get("users", action)
+
+    // cart icon notif
+    // cartIcon.innerText = `
+    //     "1"
+    // `
+    // debugger
 
     
     // Flatiron click => page reload
@@ -76,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
 
+    //drag and drop functions
     cartItems.forEach(cartItem => {
         cartItem.addEventListener("dragstart", () => {
             cartItem.classList.add("dragging")

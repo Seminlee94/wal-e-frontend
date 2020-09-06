@@ -14,6 +14,17 @@
     height: 7%;
     overflow: hidden;
     align-items: center;
+    justify-content: space-between;
+}
+
+#search-for-item {
+    width: 300px;
+    height: 35px;
+}
+
+#search-btn {
+    height: 35px;
+    width: 64px;
 }
 
 .dropdown {
@@ -37,10 +48,10 @@
     cursor: pointer;
 }
 
-#nav-logo {
+.nav-logo {
     width: 155px;
-    margin-left: 5%;
     cursor: pointer;
+    margin-right: 20%;
 }
 
 .dropdown-content {
@@ -97,6 +108,8 @@
 #nav-right {
     width: auto;
     display: flex;
+    column-gap: 30px;
+    margin-right: 6px;
 }
 
 .nav-cart {
@@ -119,7 +132,7 @@
     position: relative;
     z-index: 0;
     width: 100%;
-    height: 350px;
+    height: 250px;
 }
 
 #main-page-picture img {
