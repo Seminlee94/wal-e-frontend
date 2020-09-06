@@ -22,6 +22,7 @@
 }
 
 .dropdown .dropbtn {
+    cursor: pointer;
     font-size: 24px;
     border: none;
     outline: none;
@@ -33,11 +34,13 @@
 #nav-left {
     width: 80px;
     height: 80px;
+    cursor: pointer;
 }
 
 #nav-logo {
     width: 155px;
     margin-left: 5%;
+    cursor: pointer;
 }
 
 .dropdown-content {
@@ -79,6 +82,7 @@
     width: 100%;
     height: 11.7%;
     text-align: center;
+    cursor: pointer;
 }
 
 .dropdown:hover .dropdown-aisle {
@@ -93,6 +97,14 @@
 #nav-right {
     width: auto;
     display: flex;
+}
+
+.nav-cart {
+    cursor: pointer;
+}
+
+.nav-wishlist {
+    cursor: pointer;
 }
 
 #containers {
@@ -207,6 +219,11 @@ h6 {
     width: 90%;
     height: 15%;
     border-bottom-style: dotted;
+    cursor: pointer;
+}
+
+.cart-item.dragging {
+    opacity: .5;
 }
 
 .cart-middle-right {
@@ -229,6 +246,14 @@ h6 {
     height: 40%;
     margin-top: 15%;
     margin-left: 6px;
+}
+
+.cart-tax {
+    border-bottom-style: dotted;
+}
+
+.cart-subtotal {
+    border-bottom-style: dotted;
 }
 
 .estimated-total {
@@ -255,13 +280,23 @@ h6 {
 
 .cart-wishlist {
     text-align: center;
-    margin-top: 20%;
+    margin-top: 15%;
     height: auto;
     width: 100%;
+    font-size: 19px;
     background-color: #F5F5F5;
+    border-bottom-style: dotted;
 }
 
 .cart-nav-wishlist {
     margin-top: 20px;
     text-align: center;
+}
+
+.div1 {
+    margin-top: 10%;
+    height: 30%;
+    width: 100%;
+    text-align: center;
+    background-color: #F5F5F5;
 }

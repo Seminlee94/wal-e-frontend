@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const blank = document.querySelector(".blank")
     const navLeft = document.querySelector("#nav-left")
     const cartBtn = document.querySelector(".cart-btn")
+    const cartItems = document.querySelectorAll(".cart-item")
+    const cartList = document.querySelector(".cart-middle-left")
+    const dragDiv = document.querySelector(".div1")
 
     // const userFetchAdapter = new FetchAdapter("http://localhost:3000/")
 
@@ -60,6 +63,43 @@ document.addEventListener('DOMContentLoaded', () => {
         
         //
     })
+
+
+    cartItems.forEach(cartItem => {
+        cartItem.addEventListener("dragstart", () => {
+            cartItem.classList.add("dragging")
+        })
+        cartItem.addEventListener("dragend", () => {
+            cartItem.classList.remove("dragging")
+        })
+    })
+
+    cartList.addEventListener("dragover", () => {
+        const draggable = document.querySelector(".dragging")
+        cartList.appendChild(draggable)
+        // dragDiv.appendChild(draggable)
+    })
+  
+    dragDiv.addEventListener("dragover", () => {
+        const draggable = document.querySelector(".dragging")
+        dragDiv.appendChild(draggable)
+    })
+
+
+    // function allowDrop(ev) {
+    //     ev.preventDefault();
+    // }
+      
+    // function drag(ev) {
+    //     console.log(ev.target)
+    //     ev.dataTransfer.setData("text", ev.target.id);
+    // }
+      
+    // function drop(ev) {
+    //     ev.preventDefault();
+    //     let data = ev.dataTransfer.getData("text");
+    //     ev.target.appendChild(document.getElementById(data));
+    // }
 
 
 })
