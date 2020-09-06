@@ -1,11 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const navBar = document.querySelector(".navbar")
+    const navLeft = document.querySelector("#nav-left")
     const navCart = document.querySelector(".nav-cart")
+    const containers = document.querySelector("#containers")
     const cartContainer = document.querySelector(".cart-container")
     const ddAisle = document.querySelector(".dropdown-aisle")
     const mainContainers = document.querySelector("#main-containers")
     const sideNav = document.querySelector(".item-side-nav")
     const blank = document.querySelector(".blank")
-    const navLeft = document.querySelector("#nav-left")
     const cartBtn = document.querySelector(".cart-btn")
     const cartItems = document.querySelectorAll(".cart-item")
     const cartList = document.querySelector(".cart-middle-left")
@@ -27,12 +29,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // hide & seek with the cart
     navCart.addEventListener("click", () => {
         cartContainer.style.display = "block"
-        
-    });
+        navBar.style.opacity = 0.3
+        blank.style.opacity = 0.3
+        sideNav.style.opacity = 0.3
+        containers.style.opacity = 0.3
+        document.body.style.overflow = "hidden"
+    })
     
     // Cart X button
     cartBtn.addEventListener("click", (e) => {
         cartContainer.style.display = "none"
+        navBar.style.opacity = 1
+        blank.style.opacity = 1
+        sideNav.style.opacity = 1
+        containers.style.opacity = 1
+        document.body.style.overflow = "scroll"
     })
 
     // click the items in dropdown list to fetch the category api
