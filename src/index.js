@@ -86,9 +86,46 @@ document.addEventListener('DOMContentLoaded', () => {
         let itemCategory = e.target.innerText 
 
         blank.innerText = itemCategory
-        blank.style.backgroundColor = "DimGrey";
-        blank.style.height = "50px";
-        // debugger
+
+        // category different colors
+        switch (blank.innerText){
+            case "Bakery":
+                blank.style.backgroundColor = "BurlyWood";
+                blank.style.height = "50px";
+                break;
+            case "Produce":
+                blank.style.backgroundColor = "LightGreen";
+                blank.style.height = "50px";
+                break;
+            case "Cheese":
+                blank.style.backgroundColor = "GoldenRod";
+                blank.style.height = "50px";
+                break;
+            case "Prepared Foods":
+                blank.style.backgroundColor = "LightSlateGrey";
+                blank.style.height = "50px";
+            break;
+            case "Meat":
+                blank.style.backgroundColor = "FireBrick";
+                blank.style.height = "50px";
+            break;
+            case "Seafood":
+                blank.style.backgroundColor = "DodgerBlue";
+                blank.style.height = "50px";
+            break;
+            case "Wine, Beer & Spirits":
+                blank.style.backgroundColor = "Crimson";
+                blank.style.height = "50px";
+            break;
+            case "Other Departments":
+                blank.style.backgroundColor = "BlueViolet";
+                blank.style.height = "50px";
+            break;
+            case "View All":
+                blank.style.backgroundColor = "DimGrey";
+                blank.style.height = "50px";
+            break;
+        }
 
         //dataset.num ( category ID )
         const newDiv = document.createElement("div")
