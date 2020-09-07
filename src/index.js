@@ -17,9 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const compareContainer = document.querySelector(".compare-container")
     const compareX = document.querySelectorAll(".cart-btn")[1]
     const goCartBtn = document.querySelector(".go-cart-btn")
-    const firstWishlist = document.querySelector(".wishlist-middle-left")
-    const secondWishlist = document.querySelector(".wishlist-middle-center")
-    const thirdWishlist = document.querySelector(".wishlist-middle-right")
+    const wishlistMiddle = document.querySelector(".wishlist-middle")
+    // const wishlistItem = document.querySelector(".wishlist-middle-item")
 
     // const userFetchAdapter = new FetchAdapter("http://localhost:3000/")
 
@@ -157,16 +156,15 @@ document.addEventListener('DOMContentLoaded', () => {
     
     cartList.addEventListener("dragover", () => {
         const draggable = document.querySelector(".dragging")
-        // const copyDraggable = Object.assign({}, draggable)
-        // cartList.appendChild(copyDraggable)
         draggable.style.borderBottom = "dotted"
+        draggable.style.height="85px"
         cartList.appendChild(draggable)
     })
   
     wishContainer.addEventListener("dragover", () => {
         const draggable = document.querySelector(".dragging")
         draggable.style.borderBottom = "none"
-        // draggable.style.border-bottom-style = "none"
+        draggable.style.height="30px"
         wishContainer.append(draggable)
     })
 
@@ -176,11 +174,38 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.previousElementSibling.childElementCount <= 1) {
             alert("You need to choose two or more items to compare!")
         } else {
-            let firstItem = e.target.previousElementSibling.firstElementChild
-            let secondItem = firstItem.nextElementSibling
-            let thirdItem = secondItem.nextElementSibling
+            wishContainer.childNodes.forEach(item => {
+                //create div for each item
+                const itemDiv = document.createElement("div")
+                itemDiv.className = "wishlist-middle-item"
+                wishlistMiddle.append(itemDiv)
+                
+                //create item title
+                const itemTitle = document.createElement("div")
+                itemTitle.className = "wishlist-item-title"
+                itemDiv.append(itemTitle)
+                itemTitle.innerHTML = `${item.innerHTML}`
 
-            // debugger
+                //create item price
+                const itemPrice = document.createElement("div")
+                itemPrice.className = "wishlist-item-price"
+                itemPrice.innerText = "Price goes here"
+                itemDiv.append(itemPrice)
+
+                //create item nutrition
+                const itemNutrition = document.createElement("div")
+                itemNutrition.className = "wishlist-item-nutrition"
+                itemNutrition.innerHTML = "nutrition goes here"
+                itemDiv.append(itemNutrition)
+
+                //create remove button
+                const wishlistRemoveBtn = document.createElement("button")
+                wishlistRemoveBtn.className = "wishlist-remove-btn"
+                wishlistRemoveBtn.innerText = "Remove Item"
+                itemDiv.append(wishlistRemoveBtn)
+
+            })
+
             cartContainer.style.display = "none"
             compareContainer.style.display = "block"
             navBar.style.opacity = 0.3
@@ -188,9 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sideNav.style.opacity = 0.3
             containers.style.opacity = 0.3
             document.body.style.overflow = "hidden"
-            firstWishlist.innerHTML = `${firstItem.innerHTML}`
-            secondWishlist.innerHTML = `${secondItem.innerHTML}`
-            thirdWishlist.innerHTML = `${thirdItem.innerHTML}`
+            
         }
     })
 
