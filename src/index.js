@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navBar = document.querySelector(".navbar")
     const navLeft = document.querySelector("#nav-left")
     const navCart = document.querySelector(".nav-cart")
+    const navWishlist = document.querySelector(".nav-wishlist")
     const containers = document.querySelector("#containers")
     const cartContainer = document.querySelector(".cart-container")
     const ddAisle = document.querySelector(".dropdown-aisle")
@@ -11,8 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartBtn = document.querySelector(".cart-btn")
     const cartItems = document.querySelectorAll(".cart-item")
     const cartList = document.querySelector(".cart-middle-left")
-    const dragDiv = document.querySelector(".div1")
-    const cartIcon = document.querySelector(".cart-icon")
+    const wishContainer = document.querySelector(".wishlist-container")
+    const compareBtn = document. querySelector(".compare-btn")
+    const compareContainer = document.querySelector(".compare-container")
+    const compareX = document.querySelectorAll(".cart-btn")[1]
+    const goCartBtn = document.querySelector(".go-cart-btn")
 
     // const userFetchAdapter = new FetchAdapter("http://localhost:3000/")
 
@@ -44,13 +48,32 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     
     // Cart X button
-    cartBtn.addEventListener("click", (e) => {
-        cartContainer.style.display = "none"
-        navBar.style.opacity = 1
-        blank.style.opacity = 1
-        sideNav.style.opacity = 1
-        containers.style.opacity = 1
-        document.body.style.overflow = "scroll"
+    document.addEventListener("click", (e) => {
+        if (e.target === cartBtn) {
+            cartContainer.style.display = "none"
+            navBar.style.opacity = 1
+            blank.style.opacity = 1
+            sideNav.style.opacity = 1
+            containers.style.opacity = 1
+            document.body.style.overflow = "scroll"
+        } else if (e.target === compareX) {
+            compareContainer.style.display = "none"
+            navBar.style.opacity = 1
+            blank.style.opacity = 1
+            sideNav.style.opacity = 1
+            containers.style.opacity = 1
+            document.body.style.overflow = "scroll"
+        } else if (e.target === navWishlist) {
+            compareContainer.style.display = "block"
+            navBar.style.opacity = 0.3
+            blank.style.opacity = 0.3
+            sideNav.style.opacity = 0.3
+            containers.style.opacity = 0.3
+            document.body.style.overflow = "hidden"
+        } else if (e.target === goCartBtn) {
+            compareContainer.style.display = "none"
+            cartContainer.style.display = "block"
+        }
     })
 
     // click the items in dropdown list to fetch the category api
@@ -82,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
         //
     })
 
-
     //drag and drop functions
     cartItems.forEach(cartItem => {
         cartItem.addEventListener("dragstart", () => {
@@ -92,33 +114,37 @@ document.addEventListener('DOMContentLoaded', () => {
             cartItem.classList.remove("dragging")
         })
     })
-
+    
     cartList.addEventListener("dragover", () => {
         const draggable = document.querySelector(".dragging")
+        // const copyDraggable = Object.assign({}, draggable)
+        // cartList.appendChild(copyDraggable)
+        draggable.style.borderBottom = "dotted"
         cartList.appendChild(draggable)
-        // dragDiv.appendChild(draggable)
     })
   
-    dragDiv.addEventListener("dragover", () => {
+    wishContainer.addEventListener("dragover", () => {
         const draggable = document.querySelector(".dragging")
-        dragDiv.appendChild(draggable)
+        draggable.style.borderBottom = "none"
+        // draggable.style.border-bottom-style = "none"
+        wishContainer.append(draggable)
     })
 
 
-    // function allowDrop(ev) {
-    //     ev.preventDefault();
-    // }
-      
-    // function drag(ev) {
-    //     console.log(ev.target)
-    //     ev.dataTransfer.setData("text", ev.target.id);
-    // }
-      
-    // function drop(ev) {
-    //     ev.preventDefault();
-    //     let data = ev.dataTransfer.getData("text");
-    //     ev.target.appendChild(document.getElementById(data));
-    // }
+    //compare click button
+    compareBtn.addEventListener("click", (e) => {
+        if (e.target.previousElementSibling.childElementCount <= 1) {
+            alert("You need to choose two or more items to compare!")
+        } else {
+            cartContainer.style.display = "none"
+            compareContainer.style.display = "block"
+            navBar.style.opacity = 0.3
+            blank.style.opacity = 0.3
+            sideNav.style.opacity = 0.3
+            containers.style.opacity = 0.3
+            document.body.style.overflow = "hidden"
+        }
+    })
 
 
 })
