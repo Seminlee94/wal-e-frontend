@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const compareContainer = document.querySelector(".compare-container")
     const compareX = document.querySelectorAll(".cart-btn")[1]
     const goCartBtn = document.querySelector(".go-cart-btn")
+    const firstWishlist = document.querySelector(".wishlist-middle-left")
+    const secondWishlist = document.querySelector(".wishlist-middle-center")
+    const thirdWishlist = document.querySelector(".wishlist-middle-right")
 
     // const userFetchAdapter = new FetchAdapter("http://localhost:3000/")
 
@@ -47,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.overflow = "hidden"
     })
     
-    // Cart X button
+    // clickhandler
     document.addEventListener("click", (e) => {
         if (e.target === cartBtn) {
             cartContainer.style.display = "none"
@@ -136,6 +139,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.previousElementSibling.childElementCount <= 1) {
             alert("You need to choose two or more items to compare!")
         } else {
+            let firstItem = e.target.previousElementSibling.firstElementChild
+            let secondItem = firstItem.nextElementSibling
+            let thirdItem = secondItem.nextElementSibling
+
+            // debugger
             cartContainer.style.display = "none"
             compareContainer.style.display = "block"
             navBar.style.opacity = 0.3
@@ -143,6 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
             sideNav.style.opacity = 0.3
             containers.style.opacity = 0.3
             document.body.style.overflow = "hidden"
+            firstWishlist.innerHTML = `${firstItem.innerHTML}`
+            secondWishlist.innerHTML = `${secondItem.innerHTML}`
+            thirdWishlist.innerHTML = `${thirdItem.innerHTML}`
         }
     })
 
