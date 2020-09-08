@@ -6,7 +6,7 @@ class FetchAdapter {
 
     get(relativeUrl, callback) {
 
-        fetch(`${this.baseUrl}${relativeUrl}`)
+        fetch(`${this.baseUrl}${relativeUrl}`) // &limit_9
             .then(resp => resp.json())
             .then(callback)
 
