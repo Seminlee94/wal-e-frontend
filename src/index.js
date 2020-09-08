@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const action = items => items.forEach(item => renderItem(item))
     // itemFetchAdapter.get("items", action)
 
- 
+    
     // debugger
     const renderItem = item => {
         const itemDiv = document.createElement("div")
@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         containers.append(itemDiv)
         // debugger
+        console.log(itemDiv)
     }
 
     
