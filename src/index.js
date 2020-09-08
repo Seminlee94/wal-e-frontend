@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const compareX = document.querySelectorAll(".cart-btn")[1]
     const goCartBtn = document.querySelector(".go-cart-btn")
     const wishlistMiddle = document.querySelector(".wishlist-middle")
+    const categoryItems = document.querySelector(".category-items")
+    const groceryIndex = document.querySelector(".grocery-index")
+
     // const wishlistItem = document.querySelector(".wishlist-middle-item")
 
     const itemFetchAdapter = new FetchAdapter("http://localhost:3000/")
@@ -27,21 +30,51 @@ document.addEventListener('DOMContentLoaded', () => {
     const action = items => items.forEach(item => renderItem(item))
     // itemFetchAdapter.get("items", action)
 
-    
     // debugger
     const renderItem = item => {
         const itemDiv = document.createElement("div")
-        itemDiv.className = "api-item"
-        itemDiv.id = item.sub_category
+        itemDiv.className = "grocery-item"
         
+        
+        //item name
         const apiItemName = document.createElement("div")
         apiItemName.className = "api-item-name"
         apiItemName.innerHTML = `${item.name}`
         itemDiv.append(apiItemName)
 
-        containers.append(itemDiv)
-        // debugger
-        console.log(itemDiv)
+        //item image
+        const itemImg = document.createElement('img')
+        itemImg.className = "grocery-image"
+        itemImg.src = item.image
+        itemImg.alt = item.name
+        itemDiv.append(itemImg)
+
+        //Add to cart button
+        const itemToCart = document.createElement('button')
+        itemToCart.className = "add-to-cart"
+        itemToCart.innerText = "Add to Cart"
+        itemDiv.append(itemToCart)
+
+        //view item button
+        const itemButton = document.createElement('button')
+        itemButton.dataset.id = item.id
+        itemButton.className = "grocery-show-button"
+        itemButton.innerText = "View"
+        itemDiv.append(itemButton)
+
+        categoryItems.append(itemDiv)
+
+        // dataset database
+        itemDiv.id = item.item_id
+        itemDiv.dataset.category = item.category
+        itemDiv.dataset.sub_category = item.sub_category
+        itemDiv.dataset.name = item.name
+        itemDiv.dataset.sku = item.item_id
+        itemDiv.dataset.price = item.sales_price
+        itemDiv.dataset.description = item.description
+        itemDiv.dataset.image = item.image
+        itemDiv.dataset.receipt_info = item.receipt_info
+        itemDiv.dataset.nutrition = item.nutrition
     }
 
     
@@ -86,7 +119,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (e.target === goCartBtn) {
             compareContainer.style.display = "none"
             cartContainer.style.display = "block"
-        
+        } else if (e.target.className === "grocery-show-button" ){
+            groceryIndex.style.display = "block"
+            // navBar.style.opacity = 0.3
+            // blank.style.opacity = 0.3
+            // sideNav.style.opacity = 0.3
+            // containers.style.opacity = 0.3
         }
     })
 
@@ -135,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
             case "View All":
                 blank.style.backgroundColor = "DimGrey";
                 blank.style.height = "50px";
-                sideNav.style.display = "none"
+                categoryItems.style.display = "block"
                 itemFetchAdapter.get("items", action)
             break;
         }

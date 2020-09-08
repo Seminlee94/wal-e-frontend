@@ -410,8 +410,114 @@ h6 {
     margin-top: 18px;
 }
 
-.api-item {
-    height: 60px;
-    width: 200px;
+.category-items {
+    display: grid;
+    grid-template-columns: 10px 10px 10px 10px;
+    grid-template-rows: auto;
+    /* flex-wrap: wrap; */
+    height: auto;
+    width: auto;
+    /* overflow: scroll; */
+    /* border-style:solid; */
+}
+
+.grocery-item {
+    /* flex: 0 0 10%; */
+    display: inline-grid;
+    /* justify-content: space-between;  */
+    height: 300px;
+    width: 31%;
+    margin: 10px 10px 10px 10px;
     border-style: solid;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.grocery-image {
+    width: 85%;
+    height: 170px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.grocery-show-button {
+    background-color: coral;
+    color: white;
+    border-radius: 9px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 5px;
+}
+
+.add-to-cart {
+    background-color: coral;
+    color: white;
+    border-radius: 9px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 5px;
+}
+
+@media only screen and (max-width: 600px) {
+    .category-items {
+        display: grid;
+        grid-template-columns: 10px 10px 10px 10px;
+        grid-template-rows: auto;
+        /* flex-wrap: wrap; */
+        height: auto;
+        width: auto;
+        /* overflow: scroll; */
+        border-style:solid;
+    }
+    
+    .grocery-item {
+        /* flex: 0 0 10%; */
+        display: inline-grid;
+        /* justify-content: space-between;  */
+        height: 300px;
+        width: 30.6%;
+        margin: 10px 10px 10px 10px;
+        border-style: solid;
+    }
+
+}
+
+.grocery-index {
+    width: 60%;
+    height: 50%;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top : 300px;
+    border-style: solid;
+    position: relative;
+    z-index: 2;
+    background-color: white;
+    display: flex;
+}
+
+.grocery-index-left {
+    /* display: inline; */
+    float: left;
+    margin-left: 5%;
+    margin-top: 5%;
+    /* width: 30%;
+    height: 100%; */
+}
+
+.grocery-index-right {
+    /* display: inline; */
+    float: right;
+    /* margin-right: 30%; */
+    width:60%;
+    height: 100%;
+}
+
+.grocery-nutrition {
+    height: 25%;
+    overflow: scroll;
 }
