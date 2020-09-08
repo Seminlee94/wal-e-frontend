@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const wishlistMiddle = document.querySelector(".wishlist-middle")
     const categoryItems = document.querySelector(".category-items")
     const groceryIndex = document.querySelector(".grocery-index")
+    const groceryIndexRight = document.querySelector(".grocery-index-right")
 
     // const wishlistItem = document.querySelector(".wishlist-middle-item")
 
@@ -120,17 +121,11 @@ document.addEventListener('DOMContentLoaded', () => {
             cartContainer.style.display = "block"
         } else if (e.target.className === "grocery-show-button" ){
             groceryIndex.style.display = "block"
-            // navBar.style.opacity = 0.3
-            // blank.style.opacity = 0.3
-            // sideNav.style.opacity = 0.3
-            // containers.style.opacity = 0.3
+            navBar.style.opacity = 0.3
+            blank.style.opacity = 0.3
+            sideNav.style.opacity = 0.3
+            containers.style.opacity = 0.3
 
-            let closeButton = document.createElement('button')
-            // closeButton.className = "close-btn"
-            closeButton.style.backgroundColor = "red"
-            closeButton.style.color = "white"
-            clsoeButton.style.fontSize = "30px"
-            groceryIndex.append(closeButton)
             // console.dir(e.target)
             /// e.target = grocery show button
             let image = document.querySelector('.index-image')
@@ -153,10 +148,12 @@ document.addEventListener('DOMContentLoaded', () => {
             description.innerText = item.dataset.description
             image.src = item.dataset.image
             image.alt = item.dataset.name
-            
-
-
-            // debugger
+        } else if (e.target.className === "close-btn") {
+            groceryIndex.style.display = "none"
+            navBar.style.opacity = 1
+            blank.style.opacity = 1
+            sideNav.style.opacity = 1
+            containers.style.opacity = 1
         }
     })
 
