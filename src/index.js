@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         categoryItems.append(itemDiv)
 
         // dataset database
-        itemDiv.id = item.item_id
+        itemDiv.id = item.id
         itemDiv.dataset.category = item.category
         itemDiv.dataset.sub_category = item.sub_category
         itemDiv.dataset.name = item.name
@@ -77,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
         itemDiv.dataset.nutrition = item.nutrition
     }
 
-    
     // Flatiron click => page reload
     navLeft.addEventListener("click", (e) => {
         location.reload()
@@ -125,6 +124,39 @@ document.addEventListener('DOMContentLoaded', () => {
             // blank.style.opacity = 0.3
             // sideNav.style.opacity = 0.3
             // containers.style.opacity = 0.3
+
+            let closeButton = document.createElement('button')
+            // closeButton.className = "close-btn"
+            closeButton.style.backgroundColor = "red"
+            closeButton.style.color = "white"
+            clsoeButton.style.fontSize = "30px"
+            groceryIndex.append(closeButton)
+            // console.dir(e.target)
+            /// e.target = grocery show button
+            let image = document.querySelector('.index-image')
+            let name = document.querySelector('.index-name')
+            let category = document.querySelector('.index-category')
+            let subCategory = document.querySelector('.index-sub-category')
+            let description = document.querySelector('.index-description')
+            let sku = document.querySelector('.index-sku')
+            let price = document.querySelector('.index-price')
+            
+
+            item = e.target.parentElement
+            
+            //item info
+            category.innerText = item.dataset.category
+            subCategory.innerText = item.dataset.sub_category
+            name.innerText = item.dataset.name
+            sku.innerText = item.dataset.sku
+            price.innerText = item.dataset.price
+            description.innerText = item.dataset.description
+            image.src = item.dataset.image
+            image.alt = item.dataset.name
+            
+
+
+            // debugger
         }
     })
 
