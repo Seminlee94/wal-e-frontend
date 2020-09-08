@@ -20,18 +20,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const wishlistMiddle = document.querySelector(".wishlist-middle")
     // const wishlistItem = document.querySelector(".wishlist-middle-item")
 
-    // const userFetchAdapter = new FetchAdapter("http://localhost:3000/")
+    const itemFetchAdapter = new FetchAdapter("http://localhost:3000/")
 
 
-    //Fetch all users
-    // const action = users => users.forEach(console.log)
-    // userFetchAdapter.get("users", action)
+    // Fetch all users
+    const action = items => items.forEach(item => renderItem(item))
+    // itemFetchAdapter.get("items", action)
 
-    // cart icon notif
-    // cartIcon.innerText = `
-    //     "1"
-    // `
+ 
     // debugger
+    const renderItem = item => {
+        const itemDiv = document.createElement("div")
+        itemDiv.className = "api-item"
+        itemDiv.id = item.sub_category
+        
+        const apiItemName = document.createElement("div")
+        apiItemName.className = "api-item-name"
+        apiItemName.innerHTML = `${item.name}`
+        itemDiv.append(apiItemName)
+
+        containers.append(itemDiv)
+        // debugger
+    }
 
     
     // Flatiron click => page reload
@@ -75,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (e.target === goCartBtn) {
             compareContainer.style.display = "none"
             cartContainer.style.display = "block"
+        
         }
     })
 
@@ -123,10 +134,14 @@ document.addEventListener('DOMContentLoaded', () => {
             case "View All":
                 blank.style.backgroundColor = "DimGrey";
                 blank.style.height = "50px";
+                sideNav.style.display = "none"
+                itemFetchAdapter.get("items", action)
             break;
         }
 
         //dataset.num ( category ID )
+
+
         const newDiv = document.createElement("div")
         newDiv.dataset.num = categoryId
         newDiv.classList.add("item-categories")
@@ -203,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 wishlistRemoveBtn.className = "wishlist-remove-btn"
                 wishlistRemoveBtn.innerText = "Remove Item"
                 itemDiv.append(wishlistRemoveBtn)
-
+                    //clickhandler => DELETE item from cart 
             })
 
             cartContainer.style.display = "none"
