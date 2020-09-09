@@ -37,8 +37,8 @@
     border: none;
     outline: none;
     background-color: inherit;
-    font-family: inherit; /* Important for vertical align on mobile phones */
-    margin: 0; /* Important for vertical align on mobile phones */
+    font-family: inherit;
+    margin: 0;
 }
 
 #nav-left {
@@ -134,8 +134,9 @@
 #main-page-picture {
     position: relative;
     z-index: 0;
-    width: 100%;
+    width: 80%;
     height: 250px;
+    margin-left: 10%;
 }
 
 #main-page-picture img {
@@ -241,6 +242,7 @@ h6 {
     height: 13%;
     border-bottom: dotted;
     cursor: pointer;
+    display: flex;
 }
 
 .cart-item.dragging {
@@ -550,4 +552,32 @@ em {
     font-weight: bold;
     font-size: 40px;
     margin-left: 5px;
+}
+
+.cart-image {
+    margin-top: 30px;
+    width: 50px;
+    height: 50px;
+}
+
+.cart-name {  
+    margin-left: 15px;
+    font-size: 17px;
+    margin-top: 60px;
+    width: 40%;
+    height: 100%;
+}
+
+.cart-price {
+    margin-top: 55px;
+    width: 15%;
+    height: 100%;
+    color: #ff4500;
+}
+
+.remove-item-btn {
+    width: 6%;
+    height: 30%;
+    color: #ff4500;
+    margin-top: 55px;
 }

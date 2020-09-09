@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const sideNav = document.querySelector(".item-side-nav")
     const blank = document.querySelector(".blank")
     const cartBtn = document.querySelector(".cart-btn")
-    const cartItems = document.querySelectorAll(".cart-item")
     const cartList = document.querySelector(".cart-middle-left")
     const wishContainer = document.querySelector(".wishlist-container")
     const compareBtn = document. querySelector(".compare-btn")
@@ -25,6 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
     //fetch baseUrl
     const itemFetchAdapter = new FetchAdapter("http://localhost:3000/")
     // itemFetchAdapter.get("items", action)
+
+    // Fetch all items from cart
+    const fetchCart = carts => carts.forEach(cart => {
+        cart.items.forEach(item => {
+            renderCartItem(item)
+        })
+    })
 
     // Fetch all items
     const action = items => items.forEach(item => renderItem(item))
@@ -47,8 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (item.category === "Bakery") {
             renderItem(item)
             subCategory(item)
-            // sideNavListener(item)
-            
         }
     })
 
@@ -79,6 +83,59 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
+    // render items to cart
+    const renderCartItem = item => {
+        const cartItem = document.createElement("div")
+        cartItem.className = "cart-item"
+        cartItem.draggable = "true"
+        cartList.append(cartItem)
+        // debugger
+
+        const cartImage = document.createElement("img")
+        cartImage.className = "cart-image"
+        cartImage.src = item.image
+        cartImage.alt = item.name
+        cartItem.append(cartImage)
+
+        const cartName = document.createElement("div")
+        cartName.className = "cart-name"
+        cartName.innerHTML = item.name
+        cartItem.append(cartName)
+
+        const cartPrice = document.createElement("div")
+        cartPrice.className = "cart-price"
+        cartPrice.innerHTML = item.sales_price
+        cartItem.append(cartPrice)
+
+        const removeItemBtn = document.createElement("button")
+        removeItemBtn.className = "remove-item-btn"
+        removeItemBtn.innerText = "X"
+        cartItem.append(removeItemBtn)
+
+        cartItem.addEventListener("dragstart", () => {
+            cartItem.classList.add("dragging")
+        })
+
+        cartItem.addEventListener("dragend", () => {
+            cartItem.classList.remove("dragging")
+        })
+        
+    }
+
+    cartList.addEventListener("dragover", () => {
+        const draggable = document.querySelector(".dragging")
+        draggable.style.borderBottom = "dotted"
+        draggable.style.height="85px"
+        cartList.appendChild(draggable)
+    })
+
+    wishContainer.addEventListener("dragover", () => {
+        const draggable = document.querySelector(".dragging")
+        draggable.style.borderBottom = "none"
+        draggable.style.height="30px"
+        wishContainer.append(draggable)
+    })
+
     // sideNav listener
     sideNav.addEventListener("click", (e) => {
         if (e.target.className === "sub-category-nav") {
@@ -89,7 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     const renderItem = (item) => {
-        // debugger
         const itemDiv = document.createElement("div")
         itemDiv.className = "grocery-item"
         
@@ -148,12 +204,14 @@ document.addEventListener('DOMContentLoaded', () => {
         sideNav.style.opacity = 0.3
         containers.style.opacity = 0.3
         document.body.style.overflow = "hidden"
+        itemFetchAdapter.get("carts", fetchCart)
     })
     
     // clickhandler
     document.addEventListener("click", (e) => {
         if (e.target === cartBtn) {
             cartContainer.style.display = "none"
+            cartList.innerHTML = ""
             navBar.style.opacity = 1
             blank.style.opacity = 1
             sideNav.style.opacity = 1
@@ -174,10 +232,12 @@ document.addEventListener('DOMContentLoaded', () => {
             containers.style.opacity = 0.3
             document.body.style.overflow = "hidden"
         } else if (e.target === goCartBtn) {
+            wishlistMiddle.innerHTML = ""
             compareContainer.style.display = "none"
             cartContainer.style.display = "block"
         } else if (e.target.className === "grocery-show-button" ){
             groceryIndex.style.display = "block"
+            document.body.style.overflow = "hidden"
             navBar.style.opacity = 0.3
             blank.style.opacity = 0.3
             sideNav.style.opacity = 0.3
@@ -207,6 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
             image.alt = item.dataset.name
         } else if (e.target.className === "close-btn") {
             groceryIndex.style.display = "none"
+            document.body.style.overflow = "scroll"
             navBar.style.opacity = 1
             blank.style.opacity = 1
             sideNav.style.opacity = 1
@@ -278,8 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         //dataset.num ( category ID )
-
-
+        
         const newDiv = document.createElement("div")
         newDiv.dataset.num = categoryId
         newDiv.classList.add("item-categories")
@@ -291,34 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <em>${itemCategory}</em>
         `
         sideNav.dataset.num = categoryId
-        
-        //
     })
-
-    //drag and drop functions
-    cartItems.forEach(cartItem => {
-        cartItem.addEventListener("dragstart", () => {
-            cartItem.classList.add("dragging")
-        })
-        cartItem.addEventListener("dragend", () => {
-            cartItem.classList.remove("dragging")
-        })
-    })
-    
-    cartList.addEventListener("dragover", () => {
-        const draggable = document.querySelector(".dragging")
-        draggable.style.borderBottom = "dotted"
-        draggable.style.height="85px"
-        cartList.appendChild(draggable)
-    })
-  
-    wishContainer.addEventListener("dragover", () => {
-        const draggable = document.querySelector(".dragging")
-        draggable.style.borderBottom = "none"
-        draggable.style.height="30px"
-        wishContainer.append(draggable)
-    })
-
 
     //compare click button
     compareBtn.addEventListener("click", (e) => {
@@ -367,7 +400,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
         }
     })
-
 
 })
 
