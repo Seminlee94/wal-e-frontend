@@ -20,19 +20,81 @@ document.addEventListener('DOMContentLoaded', () => {
     const wishlistMiddle = document.querySelector(".wishlist-middle")
     const categoryItems = document.querySelector(".category-items")
     const groceryIndex = document.querySelector(".grocery-index")
-    const groceryIndexRight = document.querySelector(".grocery-index-right")
+    // const groceryIndexRight = document.querySelector(".grocery-index-right")
 
-    // const wishlistItem = document.querySelector(".wishlist-middle-item")
-
+    //fetch baseUrl
     const itemFetchAdapter = new FetchAdapter("http://localhost:3000/")
-
-
-    // Fetch all users
-    const action = items => items.forEach(item => renderItem(item))
     // itemFetchAdapter.get("items", action)
 
-    // debugger
-    const renderItem = item => {
+    // Fetch all items
+    const action = items => items.forEach(item => renderItem(item))
+
+    // sub-category lists
+    const subCategory = (item) => {
+        let subCategoryP = document.createElement('p')
+            subCategoryP.innerText = item.sub_category
+            subCategoryP.className = "sub-category-nav"
+            
+            if(sideNav.innerText.includes(item.sub_category)){
+                subCategoryP.innerText = ""
+            } else {
+                sideNav.append(subCategoryP)
+            }
+    }
+
+    // Fetch items and subcategories by category
+    const bakery = items => items.forEach(item => { 
+        if (item.category === "Bakery") {
+            renderItem(item)
+            subCategory(item)
+            sideNavListener(item)
+            
+        }
+    })
+
+    const cheese = items => items.forEach(item => { 
+        if (item.category === "Cheese") {
+            renderItem(item)
+            subCategory(item)
+        }
+    })
+
+    const meat = items => items.forEach(item => { 
+        if (item.category === "Meat") {
+            renderItem(item)
+            subCategory(item)
+        }
+    })
+
+    const seafood = items => items.forEach(item => { 
+        if (item.category === "Seafood") {
+            renderItem(item)
+            subCategory(item)
+        }
+    })
+
+    // sideNav listener
+    const sideNavListener = (item) => {
+        document.addEventListener("click", (e) => {
+            let subCategory = e.target.textContent
+            // for(let item in items){
+                if(subCategory === item.sub_category){
+                    console.log(item)
+                    categoryItems.innerHTML = ""
+                    // renderItem(item)
+                    // 
+                    
+                // }
+            }
+                
+                // for(const item in items) {
+                    // items.filter(item => item.sub_category === subCategory)
+                // }
+        })
+    }
+
+    const renderItem = (item) => {
+        // debugger
         const itemDiv = document.createElement("div")
         itemDiv.className = "grocery-item"
         
@@ -168,28 +230,40 @@ document.addEventListener('DOMContentLoaded', () => {
         // category different colors
         switch (blank.innerText){
             case "Bakery":
+                categoryItems.innerHTML = "";
                 blank.style.backgroundColor = "BurlyWood";
                 blank.style.height = "50px";
+                categoryItems.style.display = "block";
+                itemFetchAdapter.get("items", bakery)
                 break;
             case "Produce":
                 blank.style.backgroundColor = "LightGreen";
                 blank.style.height = "50px";
                 break;
             case "Cheese":
+                categoryItems.innerHTML = "";
                 blank.style.backgroundColor = "GoldenRod";
                 blank.style.height = "50px";
+                categoryItems.style.display = "block"
+                itemFetchAdapter.get("items", cheese)
                 break;
             case "Prepared Foods":
                 blank.style.backgroundColor = "LightSlateGrey";
                 blank.style.height = "50px";
             break;
             case "Meat":
+                categoryItems.innerHTML = "";
                 blank.style.backgroundColor = "FireBrick";
                 blank.style.height = "50px";
+                categoryItems.style.display = "block"
+                itemFetchAdapter.get("items", meat)
             break;
             case "Seafood":
+                categoryItems.innerHTML = "";
                 blank.style.backgroundColor = "DodgerBlue";
                 blank.style.height = "50px";
+                categoryItems.style.display = "block"
+                itemFetchAdapter.get("items", seafood)
             break;
             case "Wine, Beer & Spirits":
                 blank.style.backgroundColor = "Crimson";
@@ -200,6 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 blank.style.height = "50px";
             break;
             case "View All":
+                categoryItems.innerHTML = "";
                 blank.style.backgroundColor = "DimGrey";
                 blank.style.height = "50px";
                 categoryItems.style.display = "block"
