@@ -581,3 +581,8 @@ em {
     color: #ff4500;
     margin-top: 55px;
 }
+
+span {
+    float: right;
+    margin-right: 15px;
+}

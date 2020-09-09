@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartTax = document.querySelector(".cart-tax")
     const estimatedTotal = document.querySelector(".estimated-total")
     const cartPrices = document.getElementsByClassName("cart-price")
+    
 
     //cart item Url
     const cartItemURL = "http://localhost:3000/cart_items/"
@@ -101,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cartItem = document.createElement("div")
         cartItem.className = "cart-item"
         cartItem.draggable = "true"
+        cartItem.dataset.price = item.sales_price
         cartItem.dataset.cart_id = cart_id
         cartList.append(cartItem)
 
@@ -132,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
         cartItem.addEventListener("dragend", () => {
             cartItem.classList.remove("dragging")
         })
-        // debugger
     }
 
     cartList.addEventListener("dragover", () => {
@@ -204,6 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // hide & seek with the cart
     navCart.addEventListener("click", (e) => {
         cartContainer.style.display = "block"
+        navCart.disabled = true;
         navBar.style.opacity = 0.3
         blank.style.opacity = 0.3
         sideNav.style.opacity = 0.3
@@ -222,15 +224,15 @@ document.addEventListener('DOMContentLoaded', () => {
             num += amount
             num.toFixed(2)
             subtotal = parseFloat(num.toFixed(2))
-            cartSubtotal.lastChild.innerText = `${num.toFixed(2)}`
+            cartSubtotal.lastChild.innerText = `$ ${num.toFixed(2)}`
             
             // tax
             taxAmount += subtotal * .08625
-            cartTax.lastChild.innerText = `${taxAmount.toFixed(2)}`
+            cartTax.lastChild.innerText = `$ ${taxAmount.toFixed(2)}`
             
             // estimated total
             total = subtotal + taxAmount
-            estimatedTotal.lastChild.innerText = `${total.toFixed(2)}`
+            estimatedTotal.lastChild.innerText = `$ ${total.toFixed(2)}`
         }
     }
     
@@ -319,18 +321,58 @@ document.addEventListener('DOMContentLoaded', () => {
             postItemtoCart(item)
         } else if (e.target.className === "remove-item-btn") {
             item = e.target.parentElement
+            
+            // let htmlTotal = 
+            let subtotal = parseFloat(item.parentElement.nextElementSibling.children[0].children[0].children[1].lastChild.innerText.split(" ")[1])
+            let tax = parseFloat(item.parentElement.nextElementSibling.children[0].children[0].children[1].lastChild.innerText.split(" ")[2])
+            let estimatedTotal = parseFloat(item.parentElement.nextElementSibling.children[0].children[1].lastChild.innerText.split(" ")[1])
+
+            let price = parseFloat(item.dataset.price)
+
+            let newSubTotal = parseFloat(subtotal - price)
+            let newTax = parseFloat(newSubTotal * .08625)
+            let newTotal = parseFloat(newSubTotal + newTax)
+            
+            item.parentElement.nextElementSibling.children[0].children[0].children[1].lastChild.innerText = `$ ${newSubTotal.toFixed(2)}`
+            item.parentElement.nextElementSibling.children[0].children[0].children[2].lastChild.innerText = `$ ${newTax.toFixed(2)}`
+            item.parentElement.nextElementSibling.children[0].children[1].lastChild.innerText = `$ ${newTotal.toFixed(2)}`
+            
             deleteItemfromCart(item.dataset.cart_id)
-            // delete item from cart_item url
             function deleteItemfromCart(cartId) {
                 const options = {
                     method: "DELETE"
                 }
                 fetch(cartItemURL + cartId, options)
                 .then(resp => resp.json())
-                .then(e.target.parentElement.remove())
-                // .then()
+                .then(e.target.parentElement.remove()) 
+            }
+        
+
+            // delete item from cart_item url
+
+        } else if (e.target.className === "empty-btn"){
+            
+            let items = cartList.children // HTML collection
+            
+            for(let i = 0; i < items.length; i++){
+                deleteItemfromCart(items[i].dataset.cart_id)
+                function deleteItemfromCart(cartId) {
+                    const options = {
+                        method: "DELETE"
+                    }
+                    fetch(cartItemURL + cartId, options)
+                    .then(resp => resp.json())
+                    // .then(items[i].remove())
+                    .then(data => {
+                        cartList.innerHTML = ""
+                        cartSubtotal.innerHTML = "Subtotal <span>0.00</span>"
+                        cartTax.innerHTML = "Estimated tax <span>0.00</span>"
+                        estimatedTotal.innerHTML = "<strong>Estimated total </strong><span>0.00</span>"
+                    })
+                }
             }
         }
+
     })
     
 
