@@ -19,17 +19,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const wishlistMiddle = document.querySelector(".wishlist-middle")
     const categoryItems = document.querySelector(".category-items")
     const groceryIndex = document.querySelector(".grocery-index")
-    // const groceryIndexRight = document.querySelector(".grocery-index-right")
+    const cartSubtotal = document.querySelector(".cart-subtotal")
+    const cartTax = document.querySelector(".cart-tax")
+    const estimatedTotal = document.querySelector(".estimated-total")
+    const cartPrices = document.getElementsByClassName("cart-price")
+    
 
+    //cart item Url
+    const cartItemURL = "http://localhost:3000/cart_items/"
     //fetch baseUrl
     const itemFetchAdapter = new FetchAdapter("http://localhost:3000/")
     // itemFetchAdapter.get("items", action)
 
     // Fetch all items from cart
     const fetchCart = carts => carts.forEach(cart => {
-        cart.items.forEach(item => {
-            renderCartItem(item)
-        })
+            renderCartItem(cart.id, cart.item)
+            cartInfo()
     })
 
     // Fetch all items
@@ -77,6 +82,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
+    // sideNav listener
+    sideNav.addEventListener("click", (e) => {
+        if (e.target.className === "sub-category-nav") {
+            categoryItems.innerHTML = ""
+            itemSubCategory = e.target.innerText
+            itemFetchAdapter.get("items", subCategoryItems)
+        }
+    })
+
     const subCategoryItems = items => items.forEach(item => {
         if (itemSubCategory === item.sub_category) {
             renderItem(item)
@@ -84,12 +98,13 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     // render items to cart
-    const renderCartItem = item => {
+    const renderCartItem = (cart_id, item) => {
         const cartItem = document.createElement("div")
         cartItem.className = "cart-item"
         cartItem.draggable = "true"
+        cartItem.dataset.price = item.sales_price
+        cartItem.dataset.cart_id = cart_id
         cartList.append(cartItem)
-        // debugger
 
         const cartImage = document.createElement("img")
         cartImage.className = "cart-image"
@@ -104,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const cartPrice = document.createElement("div")
         cartPrice.className = "cart-price"
-        cartPrice.innerHTML = item.sales_price
+        cartPrice.innerHTML = `$ ${item.sales_price}`
         cartItem.append(cartPrice)
 
         const removeItemBtn = document.createElement("button")
@@ -119,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
         cartItem.addEventListener("dragend", () => {
             cartItem.classList.remove("dragging")
         })
-        
     }
 
     cartList.addEventListener("dragover", () => {
@@ -134,15 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
         draggable.style.borderBottom = "none"
         draggable.style.height="30px"
         wishContainer.append(draggable)
-    })
-
-    // sideNav listener
-    sideNav.addEventListener("click", (e) => {
-        if (e.target.className === "sub-category-nav") {
-            categoryItems.innerHTML = ""
-            itemSubCategory = e.target.innerText
-            itemFetchAdapter.get("items", subCategoryItems)
-        }
     })
 
     const renderItem = (item) => {
@@ -185,6 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
         itemDiv.dataset.name = item.name
         itemDiv.dataset.sku = item.item_id
         itemDiv.dataset.price = item.sales_price
+        itemDiv.dataset.inventory_quantity = item.inventory_quantity
         itemDiv.dataset.description = item.description
         itemDiv.dataset.image = item.image
         itemDiv.dataset.receipt_info = item.receipt_info
@@ -197,15 +203,38 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     
     // hide & seek with the cart
-    navCart.addEventListener("click", () => {
+    navCart.addEventListener("click", (e) => {
         cartContainer.style.display = "block"
+        navCart.disabled = true;
         navBar.style.opacity = 0.3
         blank.style.opacity = 0.3
         sideNav.style.opacity = 0.3
         containers.style.opacity = 0.3
         document.body.style.overflow = "hidden"
-        itemFetchAdapter.get("carts", fetchCart)
+        itemFetchAdapter.get("cart_items", fetchCart)
     })
+
+    // cart Info
+    const cartInfo = () => {
+        let num = 0;
+        let taxAmount = 0;
+        let total = 0;
+        for (let price of cartPrices){
+            amount = parseFloat(price.innerText.split(" ")[1])
+            num += amount
+            num.toFixed(2)
+            subtotal = parseFloat(num.toFixed(2))
+            cartSubtotal.lastChild.innerText = `$ ${num.toFixed(2)}`
+            
+            // tax
+            taxAmount += subtotal * .08625
+            cartTax.lastChild.innerText = `$ ${taxAmount.toFixed(2)}`
+            
+            // estimated total
+            total = subtotal + taxAmount
+            estimatedTotal.lastChild.innerText = `$ ${total.toFixed(2)}`
+        }
+    }
     
     // clickhandler
     document.addEventListener("click", (e) => {
@@ -272,8 +301,97 @@ document.addEventListener('DOMContentLoaded', () => {
             blank.style.opacity = 1
             sideNav.style.opacity = 1
             containers.style.opacity = 1
+        } else if (e.target.className === "add-to-cart") {
+            parentItem = e.target.parentElement
+            
+            let item = {
+                "id": parentItem.id,
+                "item_id": parentItem.dataset.sku, 
+                "name": parentItem.dataset.name, 
+                "sales_price": parentItem.dataset.price, 
+                "description": parentItem.dataset.description, 
+                "inventory_quantity": parentItem.dataset.inventory_quantity, 
+                "image": parentItem.dataset.image, 
+                "nutrition": parentItem.dataset.nutrition,
+                "receipt_info": parentItem.dataset.nutrition,
+                "category": parentItem.dataset.receipt_info,
+                "sub_category": parentItem.dataset.sub_category
+            }
+
+            postItemtoCart(item)
+        } else if (e.target.className === "remove-item-btn") {
+            item = e.target.parentElement
+            
+            // let htmlTotal = 
+            let subtotal = parseFloat(item.parentElement.nextElementSibling.children[0].children[0].children[1].lastChild.innerText.split(" ")[1])
+            let tax = parseFloat(item.parentElement.nextElementSibling.children[0].children[0].children[1].lastChild.innerText.split(" ")[2])
+            let estimatedTotal = parseFloat(item.parentElement.nextElementSibling.children[0].children[1].lastChild.innerText.split(" ")[1])
+
+            let price = parseFloat(item.dataset.price)
+
+            let newSubTotal = parseFloat(subtotal - price)
+            let newTax = parseFloat(newSubTotal * .08625)
+            let newTotal = parseFloat(newSubTotal + newTax)
+            
+            item.parentElement.nextElementSibling.children[0].children[0].children[1].lastChild.innerText = `$ ${newSubTotal.toFixed(2)}`
+            item.parentElement.nextElementSibling.children[0].children[0].children[2].lastChild.innerText = `$ ${newTax.toFixed(2)}`
+            item.parentElement.nextElementSibling.children[0].children[1].lastChild.innerText = `$ ${newTotal.toFixed(2)}`
+            
+            deleteItemfromCart(item.dataset.cart_id)
+            function deleteItemfromCart(cartId) {
+                const options = {
+                    method: "DELETE"
+                }
+                fetch(cartItemURL + cartId, options)
+                .then(resp => resp.json())
+                .then(e.target.parentElement.remove()) 
+            }
+        
+
+            // delete item from cart_item url
+
+        } else if (e.target.className === "empty-btn"){
+            
+            let items = cartList.children // HTML collection
+            
+            for(let i = 0; i < items.length; i++){
+                deleteItemfromCart(items[i].dataset.cart_id)
+                function deleteItemfromCart(cartId) {
+                    const options = {
+                        method: "DELETE"
+                    }
+                    fetch(cartItemURL + cartId, options)
+                    .then(resp => resp.json())
+                    // .then(items[i].remove())
+                    .then(data => {
+                        cartList.innerHTML = ""
+                        cartSubtotal.innerHTML = "Subtotal <span>0.00</span>"
+                        cartTax.innerHTML = "Estimated tax <span>0.00</span>"
+                        estimatedTotal.innerHTML = "<strong>Estimated total </strong><span>0.00</span>"
+                    })
+                }
+            }
         }
+
     })
+    
+
+    // add item to cart_item url
+    function postItemtoCart(item) {
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accepts": "application/json"
+            },
+            body: JSON.stringify({
+                cart_id: 57,
+                item_id: item.id
+            })
+        }
+        fetch("http://localhost:3000/cart_items", options)
+        // .then(res => res.json())
+    }
 
     // click the items in dropdown list to fetch the category api
 
@@ -400,6 +518,5 @@ document.addEventListener('DOMContentLoaded', () => {
             
         }
     })
-
 })
 

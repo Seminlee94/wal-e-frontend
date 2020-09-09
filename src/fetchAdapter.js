@@ -12,4 +12,10 @@ class FetchAdapter {
 
     }
 
+    set(relativeUrl, options) {
+        
+        fetch(`${this.baseUrl}${relativeUrl}`, options) // &limit_9
+        .then(resp => resp.json())
+    }
+
 }
