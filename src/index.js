@@ -31,15 +31,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // sub-category lists
     const subCategory = (item) => {
-        let subCategoryP = document.createElement('p')
-            subCategoryP.innerText = item.sub_category
-            subCategoryP.className = "sub-category-nav"
-            
-            if(sideNav.innerText.includes(item.sub_category)){
-                subCategoryP.innerText = ""
-            } else {
-                sideNav.append(subCategoryP)
-            }
+        const subCategoryP = document.createElement('p')
+        subCategoryP.innerText = item.sub_category
+        subCategoryP.className = "sub-category-nav"
+        
+        if(sideNav.innerText.includes(item.sub_category)){
+            subCategoryP.innerText = ""
+        } else {
+            sideNav.append(subCategoryP)
+        }
     }
 
     // Fetch items and subcategories by category
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (item.category === "Bakery") {
             renderItem(item)
             subCategory(item)
-            sideNavListener(item)
+            // sideNavListener(item)
             
         }
     })
@@ -73,25 +73,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
+    const subCategoryItems = items => items.forEach(item => {
+        if (itemSubCategory === item.sub_category) {
+            renderItem(item)
+        }
+    })
+
     // sideNav listener
-    const sideNavListener = (item) => {
-        document.addEventListener("click", (e) => {
-            let subCategory = e.target.textContent
-            // for(let item in items){
-                if(subCategory === item.sub_category){
-                    console.log(item)
-                    categoryItems.innerHTML = ""
-                    // renderItem(item)
-                    // 
-                    
-                // }
-            }
-                
-                // for(const item in items) {
-                    // items.filter(item => item.sub_category === subCategory)
-                // }
-        })
-    }
+    sideNav.addEventListener("click", (e) => {
+        if (e.target.className === "sub-category-nav") {
+            categoryItems.innerHTML = ""
+            itemSubCategory = e.target.innerText
+            itemFetchAdapter.get("items", subCategoryItems)
+        }
+    })
 
     const renderItem = (item) => {
         // debugger
