@@ -249,7 +249,7 @@ h6 {
     opacity: .5;
 }
 
-.cart-middle-right {
+.order-information {
     font-size: 30px;
     height: 100%;
     width: 35%;
@@ -570,7 +570,7 @@ em {
 
 .cart-price {
     margin-top: 55px;
-    width: 15%;
+    width: 18%;
     height: 100%;
     color: #ff4500;
 }
