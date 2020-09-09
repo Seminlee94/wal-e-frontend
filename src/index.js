@@ -288,14 +288,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const newDiv = document.createElement("div")
         newDiv.dataset.num = categoryId
         newDiv.classList.add("item-categories")
-        mainContainers.innerHTML = `
-        <h1>${itemCategory}</h1>
-        `
+        mainContainers.innerHTML = ""
         
         //Side Navigation Bar
         sideNav.style.display = "block"       
         sideNav.innerHTML = `
-        ${itemCategory}
+            <em>${itemCategory}</em>
         `
         sideNav.dataset.num = categoryId
         
