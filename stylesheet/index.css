@@ -173,9 +173,9 @@ h6 {
 }
 
 .item-side-nav {
-    position: absolute;
+    position: fixed;
     width: 10%;
-    height: 100%;
+    height: 60%;
     border-style: solid;
     z-index: 0;
     background-color: white;
@@ -533,4 +533,21 @@ h6 {
 
 .close-btn:hover {
     cursor: pointer;
+}
+
+.sub-category-nav {
+    border-bottom-style: dashed;
+    margin-left: 5px;
+}
+
+.sub-category-nav:hover {
+    cursor: pointer;
+}
+
+em {
+    height: auto;
+    width: 100%;
+    font-weight: bold;
+    font-size: 40px;
+    margin-left: 5px;
 }
