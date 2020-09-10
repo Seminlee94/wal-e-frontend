@@ -21,9 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const estimatedTotal = document.querySelector(".estimated-total")
     const cartPrices = document.getElementsByClassName("cart-price")
     const groceryItem = document.querySelector(".grocery-item")
+    const searchForm = document.getElementById('nav-form')
 
-    let current_page = 26;
-    let rows = 12;
+    let current_page = 1;
+    let rows = 9;
 
     // display list
     function DisplayList (items, wrapper, rows_per_page, page) {
@@ -42,8 +43,51 @@ document.addEventListener('DOMContentLoaded', () => {
         // }
     }
 
+    const getItemByName = () => {
+        searchForm.addEventListener("submit", (e) => {
+            e.preventDefault()
+            let form = e.target
+            let queryText = e.target.search.value
+            queryText.split(" ").join("%20")
+
+            let heading = document.createElement('h2')
+            heading.innerHTML = `Search Results for: ${queryText}`
+
+            categoryItems.innerHTML = ""
+            categoryItems.append(heading)
+
+            createItem(queryText)
+            form.reset()
+        })
+    }
+
+    const createItem = (itemName) => {
+
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accepts": "application/json"
+            },
+            body: JSON.stringify({
+                name: itemName
+            })
+        }
+        fetch("http://localhost:3000/items/", options)
+        .then(res => res.json())
+        .then(data => {
+            for(let item of data){
+                // console.log(item)
+                renderItem(item)
+            }
+        })
+    }
+
+
+
     //cart item Url
     const cartItemURL = "http://localhost:3000/cart_items/"
+
     //fetch baseUrl
     const itemFetchAdapter = new FetchAdapter("http://localhost:3000/")
 
@@ -297,7 +341,6 @@ document.addEventListener('DOMContentLoaded', () => {
             sideNav.style.opacity = 0.3
             containers.style.opacity = 0.3
 
-            // console.dir(e.target)
             /// e.target = grocery show button
             let image = document.querySelector('.index-image')
             let name = document.querySelector('.index-name')
@@ -307,18 +350,24 @@ document.addEventListener('DOMContentLoaded', () => {
             let sku = document.querySelector('.index-sku')
             let price = document.querySelector('.index-price')
             
-
+            
+            
             item = e.target.parentElement
             
             //item info
             category.innerText = item.dataset.category
             subCategory.innerText = item.dataset.sub_category
+            if (category.innerText === "null" && subCategory.innerText === "null") {
+                category.innerText = "category not found"
+                subCategory.innerText = "sub category not found"
+            } 
             name.innerText = item.dataset.name
             sku.innerText = item.dataset.sku
             price.innerText = item.dataset.price
             description.innerText = item.dataset.description
             image.src = item.dataset.image
             image.alt = item.dataset.name
+            // debugger
         } else if (e.target.className === "close-btn") {
             groceryIndex.style.display = "none"
             document.body.style.overflow = "scroll"
@@ -561,5 +610,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     frontpage()
+    getItemByName()
 })
 
