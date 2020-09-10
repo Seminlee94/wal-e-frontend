@@ -20,41 +20,90 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartTax = document.querySelector(".cart-tax")
     const estimatedTotal = document.querySelector(".estimated-total")
     const cartPrices = document.getElementsByClassName("cart-price")
-    const bakeryContainer = document.querySelector(".bakery-container")
-    const cheeseContainer = document.querySelector(".cheese-container")
-    const meatContainer = document.querySelector(".meat-container")
-    const paginationElement = document.querySelector(".pagenumbers")
     const groceryItem = document.querySelector(".grocery-item")
+    const searchForm = document.getElementById('nav-form')
+
     let current_page = 1;
     let rows = 9;
 
+    // display list
     function DisplayList (items, wrapper, rows_per_page, page) {
         wrapper.innerHTML = "";
-        page--;
+        // console.log(items)
+        // page--;
 
         let start = rows_per_page * page;
         let end = start + rows_per_page;
         let paginatedItems = items.slice(start, end);
-        console.log(paginatedItems)
-        for (let i = start; i < paginatedItems.length + rows_per_page; i++) {
-            renderItem(paginatedItems[i])
-        }
+        paginatedItems.forEach(item => renderItem(item))
+        // console.log(paginatedItems)
+        // for (let i = start; i < paginatedItems.length + rows_per_page; i++) {
+            // renderItem(paginatedItems[i])
+            // console.log(paginatedItems[i])
+        // }
     }
 
-    
+    const getItemByName = () => {
+        searchForm.addEventListener("submit", (e) => {
+            e.preventDefault()
+            let form = e.target
+            let queryText = e.target.search.value
+            queryText.split(" ").join("%20")
+
+            let heading = document.createElement('h2')
+            heading.innerHTML = `Search Results for: ${queryText}`
+
+            categoryItems.innerHTML = ""
+            categoryItems.append(heading)
+
+            createItem(queryText)
+            form.reset()
+        })
+    }
+
+    const createItem = (itemName) => {
+
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accepts": "application/json"
+            },
+            body: JSON.stringify({
+                name: itemName
+            })
+        }
+        fetch("http://localhost:3000/items/", options)
+        .then(res => res.json())
+        .then(data => {
+            for(let item of data){
+                // console.log(item)
+                renderItem(item)
+            }
+        })
+    }
+
+
 
     //cart item Url
     const cartItemURL = "http://localhost:3000/cart_items/"
+
     //fetch baseUrl
     const itemFetchAdapter = new FetchAdapter("http://localhost:3000/")
-    // itemFetchAdapter.get("items", action)
 
-    // Fetch all items
-    const action = items => {
+
+    // front page && index
+    const frontpage = () => {
+        categoryItems.style.display = "block"
+        itemFetchAdapter.get("items", frontIndex)
+    }
+    
+    const frontIndex = items => {
         DisplayList(items, categoryItems, rows, current_page);
     }
-
-    // const action = items => items.forEach(item => renderItem(item))
+    
+    // Fetch all items
+    const action = items => items.forEach(item => renderItem(item))
 
     // Fetch all items from cart
     const fetchCart = carts => carts.forEach(cart => {
@@ -74,27 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
             sideNav.append(subCategoryP)
         }
     }
-
-    // // main page images by category
-    const mainBakery = () => {
-        // bakeryContainer.append
-        itemFetchAdapter.get("items", bakeryMain)
-    //     bakery_items=[]
-    //     console.log(bakery_items)
-    // }
-    
-    // const bakeryMain = items => items.forEach(item => {
-    //     if (item.category === "Bakery") {
-    //         bakery_items.push(item)
-    //     }
-    }
-
-    const bakeryMain = items => items.forEach(item => {
-        if (item.category === "Bakery") {
-            renderItem(item)
-         }
-    })
-    
 
     // Fetch items and subcategories by category
     const bakery = items => items.forEach(item => { 
@@ -313,7 +341,6 @@ document.addEventListener('DOMContentLoaded', () => {
             sideNav.style.opacity = 0.3
             containers.style.opacity = 0.3
 
-            // console.dir(e.target)
             /// e.target = grocery show button
             let image = document.querySelector('.index-image')
             let name = document.querySelector('.index-name')
@@ -323,18 +350,24 @@ document.addEventListener('DOMContentLoaded', () => {
             let sku = document.querySelector('.index-sku')
             let price = document.querySelector('.index-price')
             
-
+            
+            
             item = e.target.parentElement
             
             //item info
             category.innerText = item.dataset.category
             subCategory.innerText = item.dataset.sub_category
+            if (category.innerText === "null" && subCategory.innerText === "null") {
+                category.innerText = "category not found"
+                subCategory.innerText = "sub category not found"
+            } 
             name.innerText = item.dataset.name
             sku.innerText = item.dataset.sku
             price.innerText = item.dataset.price
             description.innerText = item.dataset.description
             image.src = item.dataset.image
             image.alt = item.dataset.name
+            // debugger
         } else if (e.target.className === "close-btn") {
             groceryIndex.style.display = "none"
             document.body.style.overflow = "scroll"
@@ -576,6 +609,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    // mainBakery()
+    frontpage()
+    getItemByName()
 })
 
