@@ -20,41 +20,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartTax = document.querySelector(".cart-tax")
     const estimatedTotal = document.querySelector(".estimated-total")
     const cartPrices = document.getElementsByClassName("cart-price")
-    const bakeryContainer = document.querySelector(".bakery-container")
-    const cheeseContainer = document.querySelector(".cheese-container")
-    const meatContainer = document.querySelector(".meat-container")
-    const paginationElement = document.querySelector(".pagenumbers")
     const groceryItem = document.querySelector(".grocery-item")
-    let current_page = 1;
-    let rows = 9;
 
+    let current_page = 26;
+    let rows = 12;
+
+    // display list
     function DisplayList (items, wrapper, rows_per_page, page) {
         wrapper.innerHTML = "";
-        page--;
+        // console.log(items)
+        // page--;
 
         let start = rows_per_page * page;
         let end = start + rows_per_page;
         let paginatedItems = items.slice(start, end);
-        console.log(paginatedItems)
-        for (let i = start; i < paginatedItems.length + rows_per_page; i++) {
-            renderItem(paginatedItems[i])
-        }
+        paginatedItems.forEach(item => renderItem(item))
+        // console.log(paginatedItems)
+        // for (let i = start; i < paginatedItems.length + rows_per_page; i++) {
+            // renderItem(paginatedItems[i])
+            // console.log(paginatedItems[i])
+        // }
     }
-
-    
 
     //cart item Url
     const cartItemURL = "http://localhost:3000/cart_items/"
     //fetch baseUrl
     const itemFetchAdapter = new FetchAdapter("http://localhost:3000/")
-    // itemFetchAdapter.get("items", action)
 
-    // Fetch all items
-    const action = items => {
+
+    // front page && index
+    const frontpage = () => {
+        categoryItems.style.display = "block"
+        itemFetchAdapter.get("items", frontIndex)
+    }
+    
+    const frontIndex = items => {
         DisplayList(items, categoryItems, rows, current_page);
     }
-
-    // const action = items => items.forEach(item => renderItem(item))
+    
+    // Fetch all items
+    const action = items => items.forEach(item => renderItem(item))
 
     // Fetch all items from cart
     const fetchCart = carts => carts.forEach(cart => {
@@ -74,27 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
             sideNav.append(subCategoryP)
         }
     }
-
-    // // main page images by category
-    const mainBakery = () => {
-        // bakeryContainer.append
-        itemFetchAdapter.get("items", bakeryMain)
-    //     bakery_items=[]
-    //     console.log(bakery_items)
-    // }
-    
-    // const bakeryMain = items => items.forEach(item => {
-    //     if (item.category === "Bakery") {
-    //         bakery_items.push(item)
-    //     }
-    }
-
-    const bakeryMain = items => items.forEach(item => {
-        if (item.category === "Bakery") {
-            renderItem(item)
-         }
-    })
-    
 
     // Fetch items and subcategories by category
     const bakery = items => items.forEach(item => { 
@@ -576,6 +560,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    // mainBakery()
+    frontpage()
 })
 
