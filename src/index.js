@@ -23,7 +23,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const bakeryContainer = document.querySelector(".bakery-container")
     const cheeseContainer = document.querySelector(".cheese-container")
     const meatContainer = document.querySelector(".meat-container")
-    
+    const searchForm = document.getElementById('nav-form')
+
+
+    //search bar
+    const getItemByName = () => {
+        searchForm.addEventListener("submit", (e) => {
+            e.preventDefault()
+            
+            
+        })
+    }
 
     //cart item Url
     const cartItemURL = "http://localhost:3000/cart_items/"
@@ -63,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (item.category === "Bakery") {
             bakery_items << item
         }
-        console.log(bakery_items)
+        // console.log(bakery_items)
         // alert(bakery_items[Math.floor ( Math.random() * bakery_items.length )])
     })
 
@@ -543,7 +553,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
 
-
+    getItemByName()
     mainBakery()
 })
 

@@ -6,6 +6,10 @@
     overflow: scroll;
 }
 
+#nav-form {
+    width: 100%;
+}
+
 .navbar {
     font-family: Arial;
     display: flex;
@@ -33,7 +37,7 @@
 
 .dropdown .dropbtn {
     cursor: pointer;
-    font-size: 24px;
+    font-size: 16px;
     border: none;
     outline: none;
     background-color: inherit;
@@ -511,6 +515,10 @@ h6 {
         width: 30.6%;
         margin: 10px 10px 10px 10px;
         border-style: solid;
+    }
+
+    #nav-form {
+        width: 30px;
     }
 
 }
