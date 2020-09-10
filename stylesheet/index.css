@@ -112,14 +112,10 @@
     width: auto;
     display: flex;
     column-gap: 30px;
-    margin-right: 6px;
+    margin-right: 8%;
 }
 
 .nav-cart {
-    cursor: pointer;
-}
-
-.nav-wishlist {
     cursor: pointer;
 }
 
@@ -151,6 +147,7 @@
 
 .containers-top {
     display: flex;
+    height: 20%;
 }
 
 h6 {
@@ -165,9 +162,9 @@ h6 {
 .cart-container {
     position: relative;
     z-index: 1;
-    width: 50%;
+    width: 70%;
     height: 800px;
-    left: 25%;
+    left: 15%;
     border-style: solid;
     border-radius: 15px;
     background-color: white;
@@ -293,6 +290,13 @@ h6 {
     font-weight: bold
 }
 
+.empty-wishlist-btn {
+    width: 150px;
+    height: 40px;
+    border-radius: 5px;
+    font-weight: bold
+}
+
 .checkout-btn {
     background-color: #ff4500;
     width: 150px;
@@ -303,7 +307,7 @@ h6 {
 
 .cart-wishlist {
     text-align: center;
-    margin-top: 15%;
+    margin-top: 10%;
     height: auto;
     width: 100%;
     font-size: 19px;
@@ -317,7 +321,6 @@ h6 {
 }
 
 .div1 {
-    margin-top: 10%;
     height: 30%;
     width: 100%;
     text-align: center;
@@ -326,8 +329,9 @@ h6 {
 
 .wishlist-container {
     width: 100%;
-    height: 75%;
+    height: 100%;
     text-align: center;
+    overflow: scroll;
 }
 
 .compare-btn {
@@ -382,23 +386,54 @@ h6 {
     font-weight: bold;
 }
 
+.wishlist-container1 {
+    width: 100%;
+    height: 30%;
+    border-bottom-style: dotted;
+}
+
+.wishlist-container2 {
+    width: 100%;
+    height: 30%;
+    border-bottom-style: dotted;
+}
+
+.wishlist-container3 {
+    width: 100%;
+    height: 30%;
+    border-bottom-style: dotted;
+}
+
+.wishlist-item-image {
+    width: 110px;
+    height: 110px;
+    text-align: center;
+}
+
 .wishlist-item-title {
     width: 100%;
-    height: 13%;
+    height: 6%;
     text-align: center;
     border-bottom-style: solid;
+    font-weight: bold;
 }
 
 .wishlist-item-price {
     width: 100%;
-    height: 13%;
+    height: 5%;
     text-align: center;
+    border-bottom-style: solid;
+}
+
+.wishlist-item-description {
+    width: 100%;
+    height: 10%;
     border-bottom-style: solid;
 }
 
 .wishlist-item-nutrition {
     width: 100%;
-    height: 60%;
+    height: 50%;
     border-bottom-style: solid;
     overflow: scroll;
 }
@@ -585,4 +620,9 @@ em {
 span {
     float: right;
     margin-right: 15px;
+}
+
+.bakery-container {
+    width: 100%;
+    height: 80%;
 }

@@ -2,19 +2,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const navBar = document.querySelector(".navbar")
     const navLeft = document.querySelector("#nav-left")
     const navCart = document.querySelector(".nav-cart")
-    const navWishlist = document.querySelector(".nav-wishlist")
     const containers = document.querySelector("#containers")
     const cartContainer = document.querySelector(".cart-container")
     const ddAisle = document.querySelector(".dropdown-aisle")
     const mainContainers = document.querySelector("#main-containers")
     const sideNav = document.querySelector(".item-side-nav")
     const blank = document.querySelector(".blank")
-    const cartBtn = document.querySelector(".cart-btn")
     const cartList = document.querySelector(".cart-middle-left")
     const wishContainer = document.querySelector(".wishlist-container")
     const compareBtn = document. querySelector(".compare-btn")
     const compareContainer = document.querySelector(".compare-container")
-    const compareX = document.querySelectorAll(".cart-btn")[1]
     const goCartBtn = document.querySelector(".go-cart-btn")
     const wishlistMiddle = document.querySelector(".wishlist-middle")
     const categoryItems = document.querySelector(".category-items")
@@ -23,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartTax = document.querySelector(".cart-tax")
     const estimatedTotal = document.querySelector(".estimated-total")
     const cartPrices = document.getElementsByClassName("cart-price")
+    const bakeryContainer = document.querySelector(".bakery-container")
+    const cheeseContainer = document.querySelector(".cheese-container")
+    const meatContainer = document.querySelector(".meat-container")
     
 
     //cart item Url
@@ -31,14 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const itemFetchAdapter = new FetchAdapter("http://localhost:3000/")
     // itemFetchAdapter.get("items", action)
 
+    // Fetch all items
+    const action = items => items.forEach(item => renderItem(item))
+
     // Fetch all items from cart
     const fetchCart = carts => carts.forEach(cart => {
             renderCartItem(cart.id, cart.item)
             cartInfo()
     })
-
-    // Fetch all items
-    const action = items => items.forEach(item => renderItem(item))
 
     // sub-category lists
     const subCategory = (item) => {
@@ -52,6 +52,20 @@ document.addEventListener('DOMContentLoaded', () => {
             sideNav.append(subCategoryP)
         }
     }
+
+    // main page images by category
+    const mainBakery = () => {
+        itemFetchAdapter.get("items", bakeryMain)
+    }
+
+    const bakeryMain = items => items.forEach(item => {
+        bakery_items=[]
+        if (item.category === "Bakery") {
+            bakery_items << item
+        }
+        console.log(bakery_items)
+        // alert(bakery_items[Math.floor ( Math.random() * bakery_items.length )])
+    })
 
     // Fetch items and subcategories by category
     const bakery = items => items.forEach(item => { 
@@ -104,6 +118,8 @@ document.addEventListener('DOMContentLoaded', () => {
         cartItem.draggable = "true"
         cartItem.dataset.price = item.sales_price
         cartItem.dataset.cart_id = cart_id
+        cartItem.dataset.description = item.description
+        cartItem.dataset.nutrition = item.nutrition
         cartList.append(cartItem)
 
         const cartImage = document.createElement("img")
@@ -146,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     wishContainer.addEventListener("dragover", () => {
         const draggable = document.querySelector(".dragging")
         draggable.style.borderBottom = "none"
-        draggable.style.height="30px"
+        draggable.style.height="40px"
         wishContainer.append(draggable)
     })
 
@@ -238,28 +254,24 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // clickhandler
     document.addEventListener("click", (e) => {
-        if (e.target === cartBtn) {
+        if (e.target.className === "cart-btn") {
             cartContainer.style.display = "none"
-            cartList.innerHTML = ""
-            navBar.style.opacity = 1
-            blank.style.opacity = 1
-            sideNav.style.opacity = 1
-            containers.style.opacity = 1
-            document.body.style.overflow = "scroll"
-        } else if (e.target === compareX) {
             compareContainer.style.display = "none"
+            cartList.innerHTML = ""
+            wishContainer.innerHTML = ""
+            wishlistMiddle.innerHTML = ""
             navBar.style.opacity = 1
             blank.style.opacity = 1
             sideNav.style.opacity = 1
             containers.style.opacity = 1
             document.body.style.overflow = "scroll"
-        } else if (e.target === navWishlist) {
-            compareContainer.style.display = "block"
-            navBar.style.opacity = 0.3
-            blank.style.opacity = 0.3
-            sideNav.style.opacity = 0.3
-            containers.style.opacity = 0.3
-            document.body.style.overflow = "hidden"
+        // }   else if (e.target === navWishlist) {
+        //     compareContainer.style.display = "block"
+        //     navBar.style.opacity = 0.3
+        //     blank.style.opacity = 0.3
+        //     sideNav.style.opacity = 0.3
+        //     containers.style.opacity = 0.3
+        //     document.body.style.overflow = "hidden"
         } else if (e.target === goCartBtn) {
             wishlistMiddle.innerHTML = ""
             compareContainer.style.display = "none"
@@ -337,32 +349,23 @@ document.addEventListener('DOMContentLoaded', () => {
             item.parentElement.nextElementSibling.children[0].children[0].children[2].lastChild.innerText = `$ ${newTax.toFixed(2)}`
             item.parentElement.nextElementSibling.children[0].children[1].lastChild.innerText = `$ ${newTotal.toFixed(2)}`
             
-            deleteItemfromCart(item.dataset.cart_id)
-            function deleteItemfromCart(cartId) {
-                const options = {
-                    method: "DELETE"
-                }
-                fetch(cartItemURL + cartId, options)
-                .then(resp => resp.json())
-                .then(e.target.parentElement.remove()) 
-            }
-        
-
-            // delete item from cart_item url
-
+            deleteItemfromCart(item, item.dataset.cart_id)
+            
+        } else if (e.target.className === "wishlist-remove-btn") {
+            item = e.target.parentElement
+            deleteItemfromCart(item, item.dataset.cart_id)
         } else if (e.target.className === "empty-btn"){
             
             let items = cartList.children // HTML collection
             
             for(let i = 0; i < items.length; i++){
-                deleteItemfromCart(items[i].dataset.cart_id)
-                function deleteItemfromCart(cartId) {
+                deleteAllItemsfromCart(items[i].dataset.cart_id)
+                function deleteAllItemsfromCart(cartId) {
                     const options = {
                         method: "DELETE"
                     }
                     fetch(cartItemURL + cartId, options)
                     .then(resp => resp.json())
-                    // .then(items[i].remove())
                     .then(data => {
                         cartList.innerHTML = ""
                         cartSubtotal.innerHTML = "Subtotal <span>0.00</span>"
@@ -372,9 +375,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         }
-
     })
     
+    // delete item from cart_item url
+    const deleteItemfromCart = (item, cartId) => {
+        const options = {
+            method: "DELETE"
+        }
+        fetch(cartItemURL + cartId, options)
+        .then(resp => resp.json())
+        .then(item.remove()) 
+    }
 
     // add item to cart_item url
     function postItemtoCart(item) {
@@ -476,28 +487,49 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.previousElementSibling.childElementCount <= 1) {
             alert("You need to choose two or more items to compare!")
         } else {
+            compareContainer.style.display = "block"
+            navBar.style.opacity = 0.3
+            blank.style.opacity = 0.3
+            sideNav.style.opacity = 0.3
+            containers.style.opacity = 0.3
+            document.body.style.overflow = "hidden"
+            cartContainer.style.display = "none"
+            
             wishContainer.childNodes.forEach(item => {
                 //create div for each item
                 const itemDiv = document.createElement("div")
                 itemDiv.className = "wishlist-middle-item"
+                itemDiv.dataset.cart_id = item.dataset.cart_id
                 wishlistMiddle.append(itemDiv)
+
+                //create item image
+                const itemImage = document.createElement("img")
+                itemImage.className = "wishlist-item-image"
+                itemImage.src = item.children[0].src
+                itemImage.alt = item.innerText
+                itemDiv.append(itemImage)
                 
                 //create item title
                 const itemTitle = document.createElement("div")
                 itemTitle.className = "wishlist-item-title"
+                itemTitle.innerHTML = item.innerText
                 itemDiv.append(itemTitle)
-                itemTitle.innerHTML = `${item.innerHTML}`
-
+                
                 //create item price
                 const itemPrice = document.createElement("div")
                 itemPrice.className = "wishlist-item-price"
-                itemPrice.innerText = "Price goes here"
+                itemPrice.innerText = `price: $ ${item.dataset.price}`
                 itemDiv.append(itemPrice)
 
+                const itemDescription = document.createElement("div")
+                itemDescription.className = "wishlist-item-description"
+                itemDescription.innerHTML = item.dataset.description
+                itemDiv.append(itemDescription)
+                
                 //create item nutrition
                 const itemNutrition = document.createElement("div")
                 itemNutrition.className = "wishlist-item-nutrition"
-                itemNutrition.innerHTML = "nutrition goes here"
+                itemNutrition.innerHTML = item.dataset.nutrition
                 itemDiv.append(itemNutrition)
 
                 //create remove button
@@ -505,18 +537,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 wishlistRemoveBtn.className = "wishlist-remove-btn"
                 wishlistRemoveBtn.innerText = "Remove Item"
                 itemDiv.append(wishlistRemoveBtn)
-                    //clickhandler => DELETE item from cart 
-            })
-
-            cartContainer.style.display = "none"
-            compareContainer.style.display = "block"
-            navBar.style.opacity = 0.3
-            blank.style.opacity = 0.3
-            sideNav.style.opacity = 0.3
-            containers.style.opacity = 0.3
-            document.body.style.overflow = "hidden"
-            
+                //clickhandler => DELETE item from cart 
+            }) 
         }
     })
+
+
+
+    mainBakery()
 })
 
