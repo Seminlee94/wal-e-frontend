@@ -23,6 +23,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const bakeryContainer = document.querySelector(".bakery-container")
     const cheeseContainer = document.querySelector(".cheese-container")
     const meatContainer = document.querySelector(".meat-container")
+    const paginationElement = document.querySelector(".pagenumbers")
+    const groceryItem = document.querySelector(".grocery-item")
+    let current_page = 1;
+    let rows = 9;
+
+    function DisplayList (items, wrapper, rows_per_page, page) {
+        wrapper.innerHTML = "";
+        page--;
+
+        let start = rows_per_page * page;
+        let end = start + rows_per_page;
+        let paginatedItems = items.slice(start, end);
+        console.log(paginatedItems)
+        for (let i = start; i < paginatedItems.length + rows_per_page; i++) {
+            renderItem(paginatedItems[i])
+        }
+    }
+
     
 
     //cart item Url
@@ -32,7 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // itemFetchAdapter.get("items", action)
 
     // Fetch all items
-    const action = items => items.forEach(item => renderItem(item))
+    const action = items => {
+        DisplayList(items, categoryItems, rows, current_page);
+    }
+
+    // const action = items => items.forEach(item => renderItem(item))
 
     // Fetch all items from cart
     const fetchCart = carts => carts.forEach(cart => {
@@ -53,19 +75,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // main page images by category
+    // // main page images by category
     const mainBakery = () => {
+        // bakeryContainer.append
         itemFetchAdapter.get("items", bakeryMain)
+    //     bakery_items=[]
+    //     console.log(bakery_items)
+    // }
+    
+    // const bakeryMain = items => items.forEach(item => {
+    //     if (item.category === "Bakery") {
+    //         bakery_items.push(item)
+    //     }
     }
 
     const bakeryMain = items => items.forEach(item => {
-        bakery_items=[]
         if (item.category === "Bakery") {
-            bakery_items << item
-        }
-        console.log(bakery_items)
-        // alert(bakery_items[Math.floor ( Math.random() * bakery_items.length )])
+            renderItem(item)
+         }
     })
+    
 
     // Fetch items and subcategories by category
     const bakery = items => items.forEach(item => { 
@@ -420,6 +449,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 blank.style.height = "50px";
                 categoryItems.style.display = "block";
                 itemFetchAdapter.get("items", bakery)
+                // bakery_items=[]
+                // console.log(bakery_items)
+                // DisplayList(groceryItem, categoryItems, rows, current_page);
                 break;
             case "Produce":
                 blank.style.backgroundColor = "LightGreen";
@@ -544,6 +576,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    mainBakery()
+    // mainBakery()
 })
 
