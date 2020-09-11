@@ -190,6 +190,31 @@ document.addEventListener('DOMContentLoaded', () => {
         cartName.innerHTML = item.name
         cartItem.append(cartName)
 
+        const cartQuantityBox = document.createElement("div")
+        cartQuantityBox.className = "cart-quantity-box"
+        const quantityDown = document.createElement("img")
+        const quantityUp = document.createElement("img")
+        const cartQuantity = document.createElement("div")
+        quantityDown.className = "quantity-down"
+        quantityDown.src = "https://t3.ftcdn.net/jpg/03/08/33/44/240_F_308334444_a03jdKtCxp1RbqvMQsz6zdaCNTTxhaK7.jpg"
+        
+        quantityUp.className = "quantity-up"
+        quantityUp.src = "https://t3.ftcdn.net/jpg/02/93/94/42/240_F_293944233_9v9vpVR4eiMO6lYZ5V83zmpLens7MLHL.jpg"
+
+        cartQuantity.className = "cart-quantity"
+        cartQuantityBox.append(quantityDown)
+        cartQuantityBox.append(cartQuantity)
+        cartQuantityBox.append(quantityUp)
+        if (item.quantity === null) {
+            item.quantity = 1
+        } 
+        cartQuantity.innerHTML = item.quantity
+        
+        cartItem.append(cartQuantityBox)
+        // debugger
+
+
+
         const cartPrice = document.createElement("div")
         cartPrice.className = "cart-price"
         cartPrice.innerHTML = `$ ${item.sales_price}`
@@ -436,6 +461,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     })
                 }
             }
+        } else if (e.target.className === "quantity-down") {
+            item_quantity = parseInt(e.target.nextElementSibling.innerText)
+            if (item_quantity === 1 ) {
+                e.target.style.display = "none"
+            }
+            new_item_quantity = item_quantity - 1
+            e.target.nextElementSibling.innerText = new_item_quantity
+            // debugger
+        } else if (e.target.className === "quantity-up") {
+            item_quantity = parseInt(e.target.previousElementSibling.innerText)
+            if (item_quantity === 0 ) {
+                e.target.previousElementSibling.previousElementSibling.style.display = "block"
+            }
+            new_item_quantity = item_quantity + 1
+            e.target.previousElementSibling.innerText = new_item_quantity
         }
     })
     
