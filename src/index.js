@@ -26,6 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let current_page = 1;
     let rows = 9;
 
+    //cart item Url
+    const cartItemURL = "http://localhost:3000/cart_items/"
+
+    //fetch baseUrl
+    const itemFetchAdapter = new FetchAdapter("http://localhost:3000/")
+
     // display list
     function DisplayList (items, wrapper, rows_per_page, page) {
         wrapper.innerHTML = "";
@@ -83,15 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
-
-
-    //cart item Url
-    const cartItemURL = "http://localhost:3000/cart_items/"
-
-    //fetch baseUrl
-    const itemFetchAdapter = new FetchAdapter("http://localhost:3000/")
-
-
     // front page && index
     const frontpage = () => {
         categoryItems.style.display = "block"
@@ -107,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch all items from cart
     const fetchCart = carts => carts.forEach(cart => {
-            renderCartItem(cart.id, cart.item)
+            renderCartItem(cart.id, cart.item, cart.quantity)
             cartInfo()
     })
 
@@ -169,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     // render items to cart
-    const renderCartItem = (cart_id, item) => {
+    const renderCartItem = (cart_id, item, quantity) => {
         const cartItem = document.createElement("div")
         cartItem.className = "cart-item"
         cartItem.draggable = "true"
@@ -205,15 +202,10 @@ document.addEventListener('DOMContentLoaded', () => {
         cartQuantityBox.append(quantityDown)
         cartQuantityBox.append(cartQuantity)
         cartQuantityBox.append(quantityUp)
-        if (item.quantity === null) {
-            item.quantity = 1
-        } 
-        cartQuantity.innerHTML = item.quantity
+
+        cartQuantity.innerHTML = quantity
         
         cartItem.append(cartQuantityBox)
-        // debugger
-
-
 
         const cartPrice = document.createElement("div")
         cartPrice.className = "cart-price"
@@ -320,18 +312,21 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let price of cartPrices){
             amount = parseFloat(price.innerText.split(" ")[1])
             num += amount
+            // quantity = parseFloat(price.previousElementSibling.children[1].innerText)
+            // num += (amount * quantity)
             num.toFixed(2)
             subtotal = parseFloat(num.toFixed(2))
             cartSubtotal.lastChild.innerText = `$ ${num.toFixed(2)}`
             
-            // tax
-            taxAmount += subtotal * .08625
-            cartTax.lastChild.innerText = `$ ${taxAmount.toFixed(2)}`
-            
-            // estimated total
-            total = subtotal + taxAmount
-            estimatedTotal.lastChild.innerText = `$ ${total.toFixed(2)}`
         }
+        // tax
+        taxAmount += subtotal * .08625
+        cartTax.lastChild.innerText = `$ ${taxAmount.toFixed(2)}`
+        
+        // estimated total
+        total = subtotal + taxAmount
+        estimatedTotal.lastChild.innerText = `$ ${total.toFixed(2)}`
+        // debugger
     }
     
     // clickhandler
@@ -468,16 +463,42 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             new_item_quantity = item_quantity - 1
             e.target.nextElementSibling.innerText = new_item_quantity
-            // debugger
+            item_cart_id = e.target.parentElement.parentElement.dataset.cart_id
+            updateItemQuantity(new_item_quantity, item_cart_id)
+
         } else if (e.target.className === "quantity-up") {
             item_quantity = parseInt(e.target.previousElementSibling.innerText)
             if (item_quantity === 0 ) {
                 e.target.previousElementSibling.previousElementSibling.style.display = "block"
             }
+            //new_quantity
             new_item_quantity = item_quantity + 1
             e.target.previousElementSibling.innerText = new_item_quantity
+            //item_cart_id
+            item_cart_id = e.target.parentElement.parentElement.dataset.cart_id
+            // debugger
+            updateItemQuantity(new_item_quantity, item_cart_id)
         }
     })
+
+    // update item_quantity to cart_item url
+    const updateItemQuantity = (new_item_quantity, item_cart_id) => {
+        const options = {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accepts": "application/json"
+            },
+            body: JSON.stringify({
+                quantity: new_item_quantity
+            })
+        }
+        // debugger
+        fetch(cartItemURL + item_cart_id, options)        
+        // .catch(error => console(error))
+        // .then(res => res.json())
+        .then(console.log)
+    }
     
     // delete item from cart_item url
     const deleteItemfromCart = (item, cartId) => {
@@ -502,7 +523,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 item_id: item.id
             })
         }
-        fetch("http://localhost:3000/cart_items", options)
+        fetch(cartItemURL, options)
         // .then(res => res.json())
     }
 
