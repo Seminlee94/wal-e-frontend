@@ -20,37 +20,37 @@ Wegman API
 - Once the backend is running, you can clone this frontend repo, and copy and paste the index.html path.
 
 ## Versions...
-# Backend
+### Backend
 - Ruby 2.7.1p33
 - Rails 6.0.3.2
 - Yarn 1.22.4
 - postgres (PostgreSQL) 12.3
 
 ## Into the app 🚀
-Once the backend is seeded and the page has been loaded, you can start shopping! 
+#### Once the backend is seeded and the page has been loaded, you can start shopping! 
 
 
 ![](images/frontpage.png)
 
 
-You can view the available categories if you hover the mouse to the Browse Aisle in the headers. 
-Go in, search through the sub-categories to view the appropriate items. Click "View" to see more description of the item, and click "Add to Cart" if you wish to put it in the cart for checkout or compare items. 
+#### You can view the available categories if you hover the mouse to the Browse Aisle in the headers. 
+#### Go in, search through the sub-categories to view the appropriate items. Click "View" to see more description of the item, and click "Add to Cart" if you wish to put it in the cart for checkout or compare items. 
 
 
 ![](images/cart.png)
 
 
-You should be able to see the items that you have added. You can increase/decrease the quantity of item and the subtotal reflects on the right amount. If you wish to compare 2 or 3 items, drag the items and drop them to the Wishlist and click "Compare".
+#### You should be able to see the items that you have added. You can increase/decrease the quantity of item and the subtotal reflects on the right amount. If you wish to compare 2 or 3 items, drag the items and drop them to the Wishlist and click "Compare".
 
 
 ![](images/wishlist.png)
 
 
-You can compare the items by their description, price, and nutrition. The nutrition box needs more work, as we ran out of the time. This is one of few stretch goals that we can work on.
+#### You can compare the items by their description, price, and nutrition. The nutrition box needs more work, as we ran out of the time. This is one of few stretch goals that we can work on.
 
 ![](images/search.png)
 
-If you want to search for an item, go to the search form and type in the item you wish to search and hit enter.
+#### If you want to search for an item, go to the search form and type in the item you wish to search and hit enter.
 
 ## Developers
 ### Se Min Lee
