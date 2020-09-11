@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fetch all items from cart
     const fetchCart = carts => carts.forEach(cart => {
             renderCartItem(cart.id, cart.item, cart.quantity)
-            cartInfo()
+            cartInfo(cart.quantity)
     })
 
     // sub-category lists
@@ -203,7 +203,8 @@ document.addEventListener('DOMContentLoaded', () => {
         cartQuantityBox.append(cartQuantity)
         cartQuantityBox.append(quantityUp)
 
-        cartQuantity.innerHTML = quantity
+        cartQuantity.innerText = quantity
+        // debugger
         
         cartItem.append(cartQuantityBox)
 
@@ -211,6 +212,8 @@ document.addEventListener('DOMContentLoaded', () => {
         cartPrice.className = "cart-price"
         cartPrice.innerHTML = `$ ${item.sales_price}`
         cartItem.append(cartPrice)
+
+        // debugger
 
         const removeItemBtn = document.createElement("button")
         removeItemBtn.className = "remove-item-btn"
@@ -305,26 +308,26 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     // cart Info
-    const cartInfo = () => {
+    const cartInfo = (quantity) => {
         let num = 0;
         let taxAmount = 0;
         let total = 0;
         for (let price of cartPrices){
-            amount = parseFloat(price.innerText.split(" ")[1])
-            num += amount
-            // quantity = parseFloat(price.previousElementSibling.children[1].innerText)
-            // num += (amount * quantity)
-            num.toFixed(2)
-            subtotal = parseFloat(num.toFixed(2))
-            cartSubtotal.lastChild.innerText = `$ ${num.toFixed(2)}`
-            
+            let amount = parseFloat(price.innerText.split(" ")[1])
+            let priceXQuantity = (amount * quantity).toFixed(2)
+            // price.innerText = `$ ${priceXQuantity}`
+            num += parseFloat(priceXQuantity)
+            // debugger
         }
+        
+        
+        cartSubtotal.lastChild.innerText = `$ ${num.toFixed(2)}`
         // tax
-        taxAmount += subtotal * .08625
+        taxAmount = num * .08625
         cartTax.lastChild.innerText = `$ ${taxAmount.toFixed(2)}`
         
         // estimated total
-        total = subtotal + taxAmount
+        total = num + taxAmount
         estimatedTotal.lastChild.innerText = `$ ${total.toFixed(2)}`
         // debugger
     }
@@ -457,34 +460,49 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         } else if (e.target.className === "quantity-down") {
-            item_quantity = parseInt(e.target.nextElementSibling.innerText)
+            let item_quantity = parseInt(e.target.nextElementSibling.innerText)
             if (item_quantity === 1 ) {
                 e.target.style.display = "none"
+            } else {
+
+                //new_quantity && price
+                let new_item_quantity = item_quantity - 1
+                // let item_price = parseFloat(e.target.parentElement.parentElement.children[3].innerText.split(" ")[1])
+                // priceXQuantity = (new_item_quantity * item_price)
+                // e.target.parentElement.parentElement.children[3].innerText = `$ ${item_price}`
+    
+                e.target.nextElementSibling.innerText = new_item_quantity
+                let item_cart_id = e.target.parentElement.parentElement.dataset.cart_id
+                
+                updateItemQuantity(new_item_quantity, item_cart_id)
+                cartInfo(new_item_quantity)
             }
-            new_item_quantity = item_quantity - 1
-            e.target.nextElementSibling.innerText = new_item_quantity
-            item_cart_id = e.target.parentElement.parentElement.dataset.cart_id
-            updateItemQuantity(new_item_quantity, item_cart_id)
 
         } else if (e.target.className === "quantity-up") {
-            item_quantity = parseInt(e.target.previousElementSibling.innerText)
+            let item_quantity = parseInt(e.target.previousElementSibling.innerText)
             if (item_quantity === 0 ) {
                 e.target.previousElementSibling.previousElementSibling.style.display = "block"
+            } else {
+
+                //new_quantity && price
+                let new_item_quantity = item_quantity + 1
+                // let item_price = parseFloat(e.target.parentElement.parentElement.children[3].innerText.split(" ")[1])
+                // priceXQuantity = (new_item_quantity * item_price)
+                // e.target.parentElement.parentElement.children[3].innerText = `$ ${item_price}`    
+                
+                e.target.previousElementSibling.innerText = new_item_quantity
+                //item_cart_id
+                let item_cart_id = e.target.parentElement.parentElement.dataset.cart_id                
+                updateItemQuantity(new_item_quantity, item_cart_id)
+                cartInfo(new_item_quantity)
             }
-            //new_quantity
-            new_item_quantity = item_quantity + 1
-            e.target.previousElementSibling.innerText = new_item_quantity
-            //item_cart_id
-            item_cart_id = e.target.parentElement.parentElement.dataset.cart_id
-            // debugger
-            updateItemQuantity(new_item_quantity, item_cart_id)
         }
     })
 
     // update item_quantity to cart_item url
     const updateItemQuantity = (new_item_quantity, item_cart_id) => {
         const options = {
-            method: "PUT",
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
                 "Accepts": "application/json"
@@ -493,11 +511,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 quantity: new_item_quantity
             })
         }
-        // debugger
         fetch(cartItemURL + item_cart_id, options)        
-        // .catch(error => console(error))
-        // .then(res => res.json())
-        .then(console.log)
+        .then(res => res.json())
+        // .then(data => {
+        //     cartList.innerHTML = ""
+        //     itemFetchAdapter.get("cart_items", fetchCart)
+        // })
     }
     
     // delete item from cart_item url
