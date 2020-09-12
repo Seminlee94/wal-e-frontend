@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let current_page = 1;
     let rows = 9;
+    let num = 0;
 
     //cart item Url
     const cartItemURL = "http://localhost:3000/cart_items/"
@@ -105,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fetch all items from cart
     const fetchCart = carts => carts.forEach(cart => {
             renderCartItem(cart.id, cart.item, cart.quantity)
-            cartInfo(cart.quantity)
+            cartInfo(cart)
     })
 
     // sub-category lists
@@ -210,7 +211,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const cartPrice = document.createElement("div")
         cartPrice.className = "cart-price"
-        cartPrice.innerHTML = `$ ${item.sales_price}`
+        priceXQuantity = (quantity * item.sales_price)
+        cartPrice.innerHTML = `$ ${priceXQuantity}`
         cartItem.append(cartPrice)
 
         // debugger
@@ -308,18 +310,14 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     // cart Info
-    const cartInfo = (quantity) => {
-        let num = 0;
+    const cartInfo = (cart) => {
         let taxAmount = 0;
         let total = 0;
-        for (let price of cartPrices){
-            let amount = parseFloat(price.innerText.split(" ")[1])
-            let priceXQuantity = (amount * quantity).toFixed(2)
-            // price.innerText = `$ ${priceXQuantity}`
-            num += parseFloat(priceXQuantity)
-            // debugger
-        }
         
+        let multiplier = (cart["item"].sales_price * cart.quantity)
+    
+        num += multiplier
+        // debugger
         
         cartSubtotal.lastChild.innerText = `$ ${num.toFixed(2)}`
         // tax
@@ -329,12 +327,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // estimated total
         total = num + taxAmount
         estimatedTotal.lastChild.innerText = `$ ${total.toFixed(2)}`
-        // debugger
     }
     
     // clickhandler
     document.addEventListener("click", (e) => {
         if (e.target.className === "cart-btn") {
+            // debugger
+            num = 0;
             cartContainer.style.display = "none"
             compareContainer.style.display = "none"
             cartList.innerHTML = ""
@@ -461,41 +460,70 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else if (e.target.className === "quantity-down") {
             let item_quantity = parseInt(e.target.nextElementSibling.innerText)
-            if (item_quantity === 1 ) {
+            let total = 0;
+            let subtotal = 0;
+            let taxAmount = 0;
+            if (item_quantity === 0 ) {
                 e.target.style.display = "none"
             } else {
-
                 //new_quantity && price
                 let new_item_quantity = item_quantity - 1
-                // let item_price = parseFloat(e.target.parentElement.parentElement.children[3].innerText.split(" ")[1])
-                // priceXQuantity = (new_item_quantity * item_price)
-                // e.target.parentElement.parentElement.children[3].innerText = `$ ${item_price}`
+                let item_price = parseFloat(e.target.parentElement.parentElement.children[3].innerText.split(" ")[1])
+                priceXQuantity = (item_price - parseFloat(parseFloat(e.target.parentElement.parentElement.dataset.price).toFixed(2)))
+                e.target.parentElement.parentElement.children[3].innerText = `$ ${priceXQuantity.toFixed(2)}`
     
                 e.target.nextElementSibling.innerText = new_item_quantity
                 let item_cart_id = e.target.parentElement.parentElement.dataset.cart_id
+
+                //adding the totals
+                for(const child of e.target.parentElement.parentElement.parentElement.children) {
+                    total += parseFloat(child.children[3].lastChild.textContent.split(" ")[1])
+                }
+
+                cartSubtotal.lastChild.innerText = `$ ${total.toFixed(2)}`
+
+                taxAmount = total * .08625
+                cartTax.lastChild.innerText = `$ ${taxAmount.toFixed(2)}`
                 
+                // estimated total
+                subtotal = total + taxAmount
+                estimatedTotal.lastChild.innerText = `$ ${subtotal.toFixed(2)}`
+
                 updateItemQuantity(new_item_quantity, item_cart_id)
-                cartInfo(new_item_quantity)
             }
 
         } else if (e.target.className === "quantity-up") {
             let item_quantity = parseInt(e.target.previousElementSibling.innerText)
-            if (item_quantity === 0 ) {
-                e.target.previousElementSibling.previousElementSibling.style.display = "block"
-            } else {
+            let total = 0;
+            let subtotal = 0;
+            let taxAmount = 0;
+            e.target.previousElementSibling.previousElementSibling.style.display = "block"
 
-                //new_quantity && price
-                let new_item_quantity = item_quantity + 1
-                // let item_price = parseFloat(e.target.parentElement.parentElement.children[3].innerText.split(" ")[1])
-                // priceXQuantity = (new_item_quantity * item_price)
-                // e.target.parentElement.parentElement.children[3].innerText = `$ ${item_price}`    
-                
-                e.target.previousElementSibling.innerText = new_item_quantity
-                //item_cart_id
-                let item_cart_id = e.target.parentElement.parentElement.dataset.cart_id                
-                updateItemQuantity(new_item_quantity, item_cart_id)
-                cartInfo(new_item_quantity)
+            //new_quantity && price
+            let new_item_quantity = item_quantity + 1
+            let item_price = parseFloat(e.target.parentElement.parentElement.children[3].innerText.split(" ")[1])
+            priceXQuantity = (item_price + parseFloat(parseFloat(e.target.parentElement.parentElement.dataset.price).toFixed(2)))
+            e.target.parentElement.parentElement.children[3].innerText = `$ ${priceXQuantity.toFixed(2)}`            
+            e.target.previousElementSibling.innerText = new_item_quantity
+
+            //item_cart_id
+            let item_cart_id = e.target.parentElement.parentElement.dataset.cart_id 
+
+            //adding the total    
+            for(const child of e.target.parentElement.parentElement.parentElement.children) {
+                total += parseFloat(child.children[3].lastChild.textContent.split(" ")[1])
             }
+
+            cartSubtotal.lastChild.innerText = `$ ${total.toFixed(2)}`
+
+            taxAmount = total * .08625
+            cartTax.lastChild.innerText = `$ ${taxAmount.toFixed(2)}`
+            
+            // estimated total
+            subtotal = total + taxAmount
+            estimatedTotal.lastChild.innerText = `$ ${subtotal.toFixed(2)}`
+
+            updateItemQuantity(new_item_quantity, item_cart_id)
         }
     })
 
@@ -513,10 +541,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         fetch(cartItemURL + item_cart_id, options)        
         .then(res => res.json())
-        // .then(data => {
-        //     cartList.innerHTML = ""
-        //     itemFetchAdapter.get("cart_items", fetchCart)
-        // })
     }
     
     // delete item from cart_item url
@@ -543,7 +567,6 @@ document.addEventListener('DOMContentLoaded', () => {
             })
         }
         fetch(cartItemURL, options)
-        // .then(res => res.json())
     }
 
     // click the items in dropdown list to fetch the category api
