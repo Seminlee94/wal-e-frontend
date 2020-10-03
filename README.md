@@ -1,32 +1,34 @@
-# WALL-E 
+# WALL-E
+
+## About✅
 You can shop and compare the items with WALL-E
 - Search for any items you want to shop.
 - OR, go through the categories and add the item to the cart.
 
-## This project includes...
+## This project includes...✅
 Wegman API
 - Used Postman to search the API
 - Retrieve items: name, price, description, nutrition, category, and sub-category.
 
-## User should be able to...
+## User should be able to...✅
 - Go through categories and to the sub-categories for an item.
 - View the item, and add the item to the cart.
 - Use the search bar to search for an item.
 - Drag and drop the up to three items in the cart to the wishlist, where the user can compare the nutrition, descriptions, and prices for each item.
 
-## To run this CLI...
+## To run this CLI...✅
 - Go to our backend repo, and clone it, and follow the README to run the program.
 ```https://github.com/abeciana1/wal-e-backend```
 - Once the backend is running, you can clone this frontend repo, and copy and paste the index.html path.
 
-## Versions...
+## Versions...✅
 ### Backend
 - Ruby 2.7.1p33
 - Rails 6.0.3.2
 - Yarn 1.22.4
 - postgres (PostgreSQL) 12.3
 
-## Into the app 🚀
+## 🚀🚀🚀Into the app 🚀🚀🚀
 #### Once the backend is seeded and the page has been loaded, you can start shopping! 
 
 
