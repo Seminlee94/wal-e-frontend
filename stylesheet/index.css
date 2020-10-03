@@ -480,6 +480,7 @@ h6 {
     overflow: hidden;
     width: 0;
     height: 100%;
+    opacity: .6;
     transition: .5s ease;
 }
 
@@ -541,7 +542,7 @@ h6 {
 } */
 
 .grocery-show-button {
-    background-color: coral;
+    background-color: red;
     color: white;
     border-radius: 9px;
     font-size: 15px;
@@ -565,7 +566,7 @@ h6 {
 } */
 
 .add-to-cart {
-    background-color: coral;
+    background-color: red;
     color: white;
     border-radius: 9px;
     font-size: 15px;

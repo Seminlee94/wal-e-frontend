@@ -63,9 +63,16 @@ Wegman API
 ### Alex Beciana
 
 # Demo
-- coming soon!
-## Previous project Demo & github codes
+https://www.youtube.com/watch?v=58Dlbg41p70
+
+## Please check out Se Min Lee's previous demos and projects.
+#### Demo
 - https://www.youtube.com/watch?v=sn4SqkDkPZQ&t=62s << Flatiron Consulting
 - https://www.youtube.com/watch?v=TVFmlVFrffw&t=5s << Shop N Cook
-https://github.com/cdemarti/mod2_final_project << code for Flatiron Consulting
+- Mod4 Project Cart-In coming soon!
+
+#### Github Codes
+- https://github.com/cdemarti/mod2_final_project << code for Flatiron Consulting
 - https://github.com/jakelozano94/ruby-project-guidelines-nyc01-seng-ft-071320  << code for Shop N Cook
+- https://github.com/Seminlee94/mod4project-react << code for Cart-In(front end)
+- https://github.com/Seminlee94/mod4project-backend << code for Cart-In(back end)
