@@ -54,7 +54,7 @@ Wegman API
 
 #### If you want to search for an item, go to the search form and type in the item you wish to search and hit enter.
 
-## Developers
+## Developers✅
 ### Se Min Lee
 - email: seminlee2794@gmail.com
 - github: https://github.com/Seminlee94
@@ -64,7 +64,7 @@ Wegman API
 
 ### Alex Beciana
 
-# Demo
+# Demo✅
 https://www.youtube.com/watch?v=58Dlbg41p70
 
 ## Please check out Se Min Lee's previous demos and projects.
